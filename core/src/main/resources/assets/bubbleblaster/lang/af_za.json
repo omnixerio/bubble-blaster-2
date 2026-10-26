@@ -6,7 +6,7 @@
   "bubbleblaster.bubble.blindness": "Blindness Bubble",
   "bubbleblaster.bubble.blindness.desc": "This bubble is annoying, when touching, it will darken the screen like if you were blind. Will be temporary, how larger the bubble how darker the screen will be.",
   "bubbleblaster.bubble.bouncy": "Bouncy Bubble",
-  "bubbleblaster.bubble.bouncy.desc": "Work In Progress (WIP), the bounce bubble would bounce the player from it. There are currently problems with it.",
+  "bubbleblaster.bubble.bouncy.desc": "The bounce bubble would bounce the player from it. There are currently problems with it.",
   "bubbleblaster.bubble.bubble_freeze": "Time Bubble",
   "bubbleblaster.bubble.bubble_freeze.desc": "This bubble will freeze all bubbles for some time.",
   "bubbleblaster.bubble.damage": "Damage Bubble",
