@@ -3,13 +3,10 @@ package dev.ultreon.bubbles;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.graphics.glutils.HdpiMode;
-import com.badlogic.gdx.utils.Os;
-import com.badlogic.gdx.utils.SharedLibraryLoader;
 import dev.ultreon.bubbles.platform.desktop.DesktopPlatform;
 import dev.ultreon.libs.crash.v0.CrashLog;
 import net.fabricmc.loader.impl.util.Arguments;
 import org.jetbrains.annotations.NotNull;
-import org.lwjgl.system.Configuration;
 
 
 import java.util.ArrayList;
@@ -59,6 +56,7 @@ public class DesktopLauncher {
         config.setHdpiMode(HdpiMode.Logical);
         config.setBackBufferConfig(8, 8, 8, 8, 16, 0, 8);
         config.setInitialVisible(false);
+        config.setInitialVisible(true);
         config.setTitle("Bubble Blaster");
         config.setWindowIcon(icons.toArray(String[]::new));
         config.setWindowedMode(1280, 720);

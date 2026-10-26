@@ -3,6 +3,8 @@ package dev.ultreon.bubbles.entity.player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.*;
 import dev.ultreon.bubbles.*;
+import dev.ultreon.bubbles.effect.BlindnessStatusEffect;
+import dev.ultreon.bubbles.effect.StatusEffectInstance;
 import dev.ultreon.bubbles.entity.Bubble;
 import dev.ultreon.bubbles.entity.Bullet;
 import dev.ultreon.bubbles.entity.Entity;
@@ -16,6 +18,7 @@ import dev.ultreon.bubbles.event.v1.PlayerEvents;
 import dev.ultreon.bubbles.gamemode.openworld.OpenWorldMode;
 import dev.ultreon.bubbles.init.AmmoTypes;
 import dev.ultreon.bubbles.init.Entities;
+import dev.ultreon.bubbles.init.StatusEffects;
 import dev.ultreon.bubbles.item.collection.PlayerItemCollection;
 import dev.ultreon.bubbles.player.InputController;
 import dev.ultreon.bubbles.registry.Registries;
@@ -30,6 +33,7 @@ import dev.ultreon.ubo.types.MapType;
 import dev.ultreon.libs.commons.v0.Mth;
 import dev.ultreon.libs.datetime.v0.Duration;
 import org.apache.commons.lang3.SystemUtils;
+import org.checkerframework.checker.guieffect.Effect;
 import org.jetbrains.annotations.NotNull;
 
 import static dev.ultreon.bubbles.BubbleBlaster.TPS;
@@ -804,5 +808,18 @@ public class Player extends LivingEntity implements InputController {
         var mousePosition = new Vector2D(mousePos.x, mousePos.y);
         var visualPos = new Vector2D(this.getVisualX(), this.getVisualY());
         return mousePosition.dst(visualPos);
+    }
+
+    public boolean isBlind() {
+        return this.hasEffect(StatusEffects.BLINDNESS);
+    }
+
+    private boolean hasEffect(BlindnessStatusEffect effect) {
+        for (var statusEffect : this.statusEffects) {
+            if (statusEffect.getType() == effect) {
+                return true;
+            }
+        }
+        return false;
     }
 }

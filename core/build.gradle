@@ -122,6 +122,8 @@ dependencies {
     api "org.apache.commons:commons-math3:$commons_math_version"
     api "org.apache.ant:ant:$ant_version"
 
+    api "com.badlogicgames.box2dlights:box2dlights:1.5"
+
     // Local jars.
     api fileTree(dir: "$projectDir/libs", include: ["*.jar"])
 

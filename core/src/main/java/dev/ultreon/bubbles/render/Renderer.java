@@ -246,16 +246,16 @@ public class Renderer {
     }
 
     /** Draws all concentric bubble outlines with one SpriteBatch draw call. */
-    public boolean drawBubble(float x, float y, float radius, float spacing, float lineWidth, List<Color> colors) {
+    public boolean drawBubble(float x, float y, float radius, float spacing, float lineWidth, List<Color> colors, boolean night) {
         if (!this.rendering || colors.isEmpty() || colors.size() > MAX_BUBBLE_COLORS || radius <= 0) return false;
 
         var colorValues = new float[colors.size() * 4];
         for (var i = 0; i < colors.size(); i++) {
             var color = colors.get(i);
             var offset = i * 4;
-            colorValues[offset] = color.r;
-            colorValues[offset + 1] = color.g;
-            colorValues[offset + 2] = color.b;
+            colorValues[offset] = color.r * 0.5f;
+            colorValues[offset + 1] = color.g * 0.5f;
+            colorValues[offset + 2] = color.b * 0.5f;
             colorValues[offset + 3] = color.a;
         }
 
@@ -1788,6 +1788,10 @@ public class Renderer {
 
     public int getHeight() {
         return this.height;
+    }
+
+    public OrthographicCamera getCamera() {
+        return this.camera;
     }
 
     public void blit(int x, int y) {
