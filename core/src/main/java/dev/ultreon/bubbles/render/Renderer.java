@@ -253,9 +253,10 @@ public class Renderer {
         for (var i = 0; i < colors.size(); i++) {
             var color = colors.get(i);
             var offset = i * 4;
-            colorValues[offset] = color.r * 0.5f;
-            colorValues[offset + 1] = color.g * 0.5f;
-            colorValues[offset + 2] = color.b * 0.5f;
+            var nightMul = night ? 0.5f : 1.0f;
+            colorValues[offset] = color.r * nightMul;
+            colorValues[offset + 1] = color.g * nightMul;
+            colorValues[offset + 2] = color.b * nightMul;
             colorValues[offset + 3] = color.a;
         }
 

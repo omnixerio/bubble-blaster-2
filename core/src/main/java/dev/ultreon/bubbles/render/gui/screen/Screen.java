@@ -167,7 +167,7 @@ public abstract class Screen extends Container implements CrashFiller {
 
     public void renderBackground(Renderer renderer) {
         if (this.game.world != null)
-            renderer.fillGradient(0, 0, this.getWidth(), this.getHeight(), Colors.rgba(0x00, 0x00, 0x00, 8), Colors.rgba(0x00, 0x00, 0x00, 0x60), Axis2D.VERTICAL);
+            renderer.fillGradient(0, 0, this.getWidth(), this.getHeight(), Colors.rgba(0x00, 0x00, 0x00, 0x80), Colors.rgba(0x00, 0x00, 0x00, 0x60), Axis2D.VERTICAL);
         else
             renderer.fill(0, 0, this.getWidth(), this.getHeight(), Colors.grayscale(0x1e));
     }

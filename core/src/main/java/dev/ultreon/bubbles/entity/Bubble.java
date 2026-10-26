@@ -3,6 +3,9 @@ package dev.ultreon.bubbles.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import dev.ultreon.bubbles.BubbleBlaster;
 import dev.ultreon.bubbles.BubbleBlasterConfig;
 import dev.ultreon.bubbles.Constants;
@@ -66,6 +69,9 @@ public class Bubble extends AbstractBubbleEntity {
     private boolean isBeingDestroyed;
     private Variant variant;
 
+    // Light body for box2dLight shadow casting
+    private Body lightBody;
+
     public static Variant getRandomVariant(World world, RandomSource random) {
         return random.nextInt(0, GIANT_BUBBLE_RARITY) == 0 ? Variant.GIANT : Variant.NORMAL;
     }
@@ -78,6 +84,7 @@ public class Bubble extends AbstractBubbleEntity {
         super(entityType, world);
 
         this.variant = variant;
+        this.lightBody = null;
     }
 
     /**
@@ -138,6 +145,9 @@ public class Bubble extends AbstractBubbleEntity {
         this.markAsCollidable(Entities.PLAYER);
 
         this.make();
+        
+        // Create light-blocking body for this bubble
+        this.createLightBody();
     }
 
     @Override
@@ -195,6 +205,9 @@ public class Bubble extends AbstractBubbleEntity {
     @Override
     protected void invalidate() {
         this.valid = false;
+        
+        // Destroy light-blocking body when bubble is deleted
+        this.destroyLightBody();
     }
 
     /**
@@ -241,6 +254,9 @@ public class Bubble extends AbstractBubbleEntity {
         }
 
         super.tick(world);
+        
+        // Update light body position to match bubble position
+        this.updateLightBody();
 
         if (!isOpenWorld && this.pos.x + this.radius < 0) {
             this.delete();
@@ -318,6 +334,44 @@ public class Bubble extends AbstractBubbleEntity {
         var bounds = BubbleBlaster.getInstance().getBounds();
         return this.pos.x + this.radius >= 0 && this.pos.y + this.radius >= 0 &&
                 this.pos.x - this.radius <= bounds.width && this.pos.y - this.radius <= bounds.height;
+    }
+    
+    // Light body management methods
+    
+    private void createLightBody() {
+        var lightWorld = WorldRenderer.getLightWorld();
+        if (lightWorld == null) return;
+        
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set(this.getVisualX(), this.getVisualY());
+        
+        this.lightBody = lightWorld.createBody(bodyDef);
+        
+        CircleShape circleShape = new CircleShape();
+        circleShape.setRadius(this.getRadius() / 2f);
+        this.lightBody.createFixture(circleShape, 0);
+        circleShape.dispose();
+    }
+    
+    private void updateLightBody() {
+        if (this.lightBody != null) {
+            this.lightBody.setTransform(this.getVisualX(), this.getVisualY(), 0f);
+        }
+    }
+    
+    private void destroyLightBody() {
+        if (this.lightBody != null) {
+            var lightWorld = WorldRenderer.getLightWorld();
+            if (lightWorld != null) {
+                lightWorld.destroyBody(this.lightBody);
+            }
+            this.lightBody = null;
+        }
+    }
+    
+    public Body getLightBody() {
+        return this.lightBody;
     }
 
     ///////////////////////////////////////////////////////////////////////////

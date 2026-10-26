@@ -34,14 +34,24 @@ public class WorldRenderer implements Renderable {
 
     private final RayHandler rayHandler;
     private final ConeLight coneLight;
+    private static com.badlogic.gdx.physics.box2d.World lightWorld;
 
     public WorldRenderer() {
-        this.rayHandler = new RayHandler(null);
+        WorldRenderer.lightWorld = new com.badlogic.gdx.physics.box2d.World(new com.badlogic.gdx.math.Vector2(0, 0), true);
+        this.rayHandler = new RayHandler(WorldRenderer.lightWorld);
         this.rayHandler.setAmbientLight(0.1f, 0.1f, 0.1f, 1f);
         this.rayHandler.setBlurNum(3);
         this.rayHandler.setShadows(true);
         this.coneLight = new ConeLight(this.rayHandler, 64, new Color(1f, 1f, 1f, 1f), 400f, 0f, 0f, 0f, 45f);
         this.coneLight.setSoft(true);
+    }
+    
+    /**
+     * Get the light world for creating light-blocking bodies.
+     * @return the light world, or null if not initialized.
+     */
+    public static com.badlogic.gdx.physics.box2d.World getLightWorld() {
+        return lightWorld;
     }
 
     /**
@@ -234,8 +244,10 @@ public class WorldRenderer implements Renderable {
         Gdx.gl20.glBlendFunc(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl20.glDisable(GL20.GL_DEPTH_TEST);
 
-        this.rayHandler.setCombinedMatrix(renderer.getCamera().combined, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        this.rayHandler.updateAndRender();
+        if (WorldRenderer.isNight()) {
+            this.rayHandler.setCombinedMatrix(renderer.getCamera().combined, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            this.rayHandler.updateAndRender();
+        }
 
         // Restore OpenGL state
         Gdx.gl20.glEnable(GL20.GL_DEPTH_TEST);
@@ -248,7 +260,7 @@ public class WorldRenderer implements Renderable {
             currentGameplayEvent.renderBackground(this.getWorld(), renderer);
         } else {
             if (!hud.renderBackground(renderer, BG_TOP, BG_BOTTOM)) {
-                if (isNight()) {
+                if (WorldRenderer.isNight()) {
                     renderer.fillGradient(0, 0, this.game.getWidth(), this.game.getHeight(), BG_TOP_NIGHT, BG_BOTTOM_NIGHT);
                 } else {
                     renderer.fillGradient(0, 0, this.game.getWidth(), this.game.getHeight(), BG_TOP, BG_BOTTOM);
