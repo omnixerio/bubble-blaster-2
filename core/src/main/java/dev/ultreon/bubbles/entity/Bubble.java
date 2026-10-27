@@ -341,14 +341,14 @@ public class Bubble extends AbstractBubbleEntity {
     private void createLightBody() {
         var lightWorld = WorldRenderer.getLightWorld();
         if (lightWorld == null) return;
-        
-        BodyDef bodyDef = new BodyDef();
+
+        var bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(this.getVisualX(), this.getVisualY());
         
         this.lightBody = lightWorld.createBody(bodyDef);
-        
-        CircleShape circleShape = new CircleShape();
+
+        var circleShape = new CircleShape();
         circleShape.setRadius(this.getRadius() / 2f);
         this.lightBody.createFixture(circleShape, 0);
         circleShape.dispose();
