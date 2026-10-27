@@ -6,7 +6,7 @@
   "bubbleblaster.bubble.blindness": "Verblindingsbubbel",
   "bubbleblaster.bubble.blindness.desc": "Deze vervelende bubbel maakt het scherm donkerder wanneer je hem aanraakt, alsof je blind bent. Het effect is tijdelijk, maar hoe groter de bubbel, hoe donkerder het scherm wordt.",
   "bubbleblaster.bubble.bouncy": "Stuiterbubbel",
-  "bubbleblaster.bubble.bouncy.desc": "Wordt nog ontwikkeld (WIP). De stuiterbubbel zou ervoor moeten zorgen dat de speler terugstuitert. Momenteel zijn er nog problemen mee.",
+  "bubbleblaster.bubble.bouncy.desc": "De stuiterbubbel zou ervoor moeten zorgen dat de speler terugstuitert. Momenteel zijn er nog problemen mee.",
   "bubbleblaster.bubble.bubble_freeze": "Bubbelbevriezingsbubbel",
   "bubbleblaster.bubble.bubble_freeze.desc": "Deze bubbel bevriest alle bubbels gedurende een bepaalde tijd.",
   "bubbleblaster.bubble.damage": "Aanvalsbel",

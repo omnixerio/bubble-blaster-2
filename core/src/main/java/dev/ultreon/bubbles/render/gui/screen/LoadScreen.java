@@ -254,6 +254,7 @@ public final class LoadScreen extends InternalScreen {
         this.registerLanguage("zh_cn");
         this.registerLanguage("el_gr");
         this.registerLanguage("ja_jp");
+        this.registerLanguage("vi_vn");
 
         LifecycleEvents.REGISTER_LANGUAGES.factory().onRegisterLanguages(this.game, this, this::registerLanguage);
 

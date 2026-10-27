@@ -1,6 +1,10 @@
 package dev.ultreon.bubbles.world;
 
+import box2dLight.ConeLight;
+import box2dLight.RayHandler;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Circle;
 import dev.ultreon.bubbles.BubbleBlaster;
@@ -17,16 +21,37 @@ import dev.ultreon.bubbles.render.gui.hud.HudType;
 import dev.ultreon.libs.commons.v0.Mth;
 
 import javax.annotation.Nullable;
+import java.util.Calendar;
 import java.util.List;
 
 public class WorldRenderer implements Renderable {
     public static final Color BG_TOP = Colors.argb(0xff008EDA);
     public static final Color BG_BOTTOM = Colors.argb(0xff004BA1);
+    public static final Color BG_TOP_NIGHT = Colors.argb(0xff008EDA).mul(0.5f);
+    public static final Color BG_BOTTOM_NIGHT = Colors.argb(0xff004BA1).mul(0.5f);
     private final BubbleBlaster game = BubbleBlaster.getInstance();
     private final Profiler profiler = this.game.profiler;
 
-    public WorldRenderer() {
+    private final RayHandler rayHandler;
+    private final ConeLight coneLight;
+    private static com.badlogic.gdx.physics.box2d.World lightWorld;
 
+    public WorldRenderer() {
+        WorldRenderer.lightWorld = new com.badlogic.gdx.physics.box2d.World(new com.badlogic.gdx.math.Vector2(0, 0), true);
+        this.rayHandler = new RayHandler(WorldRenderer.lightWorld);
+        this.rayHandler.setAmbientLight(0.1f, 0.1f, 0.1f, 1f);
+        this.rayHandler.setBlurNum(3);
+        this.rayHandler.setShadows(true);
+        this.coneLight = new ConeLight(this.rayHandler, 64, new Color(1f, 1f, 1f, 1f), 400f, 0f, 0f, 0f, 45f);
+        this.coneLight.setSoft(true);
+    }
+    
+    /**
+     * Get the light world for creating light-blocking bodies.
+     * @return the light world, or null if not initialized.
+     */
+    public static com.badlogic.gdx.physics.box2d.World getLightWorld() {
+        return lightWorld;
     }
 
     /**
@@ -88,7 +113,7 @@ public class WorldRenderer implements Renderable {
     @Deprecated(forRemoval = true)
     public static void drawBubble(Renderer renderer, float x, float y, float radius, int destroyFrame, List<Color> colors, Texture insideTexture) {
         float thickness = BubbleBlasterConfig.BUBBLE_LINE_THICKNESS.get();
-        if (insideTexture == null && renderer.drawBubble(x, y, radius, thickness, thickness + 0.5f, colors)) {
+        if (insideTexture == null && renderer.drawBubble(x, y, radius, thickness, thickness + 0.5f, colors, WorldRenderer.isNight())) {
             return;
         }
 
@@ -124,7 +149,7 @@ public class WorldRenderer implements Renderable {
      */
     public static void drawBubble(Renderer renderer, float x, float y, float radius, int destroyFrame, BubbleType type) {
         float thickness = BubbleBlasterConfig.BUBBLE_LINE_THICKNESS.get();
-        if (type.getInsideTexture() == null && renderer.drawBubble(x, y, radius, thickness, thickness + 0.5f, type.getColors())) {
+        if (type.getInsideTexture() == null && renderer.drawBubble(x, y, radius, thickness, thickness + 0.5f, type.getColors(), isNight())) {
             return;
         }
 
@@ -195,7 +220,38 @@ public class WorldRenderer implements Renderable {
 
         this.profiler.section("Render HUD", () -> hud.renderHudOverlay(renderer, world, world.getGamemode(), deltaTime));
 
+        this.renderConeLight(renderer, world);
+
 //        renderer.disableNoise();
+    }
+
+    private void renderConeLight(Renderer renderer, World world) {
+        var player = world.getPlayer();
+        if (player == null || player.isBlind()) return;
+
+        var x = player.getVisualX();
+        var y = player.getVisualY();
+        var direction = player.getRotation();
+
+        this.coneLight.setPosition(x, y);
+        this.coneLight.setDirection(direction);
+
+        // End the sprite batch before rendering lights
+        renderer.flush();
+
+        // Set up OpenGL state for the ray handler
+        Gdx.gl20.glEnable(GL20.GL_BLEND);
+        Gdx.gl20.glBlendFunc(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        Gdx.gl20.glDisable(GL20.GL_DEPTH_TEST);
+
+        if (WorldRenderer.isNight()) {
+            this.rayHandler.setCombinedMatrix(renderer.getCamera().combined, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            this.rayHandler.updateAndRender();
+        }
+
+        // Restore OpenGL state
+        Gdx.gl20.glEnable(GL20.GL_DEPTH_TEST);
+        Gdx.gl20.glDisable(GL20.GL_BLEND);
     }
 
     private void renderBackground(Renderer renderer, World world, HudType hud) {
@@ -204,17 +260,26 @@ public class WorldRenderer implements Renderable {
             currentGameplayEvent.renderBackground(this.getWorld(), renderer);
         } else {
             if (!hud.renderBackground(renderer, BG_TOP, BG_BOTTOM)) {
-                renderer.fillGradient(0, 0, this.game.getWidth(), this.game.getHeight(), BG_TOP, BG_BOTTOM);
+                if (WorldRenderer.isNight()) {
+                    renderer.fillGradient(0, 0, this.game.getWidth(), this.game.getHeight(), BG_TOP_NIGHT, BG_BOTTOM_NIGHT);
+                } else {
+                    renderer.fillGradient(0, 0, this.game.getWidth(), this.game.getHeight(), BG_TOP, BG_BOTTOM);
+                }
             }
         }
+    }
+
+    private static boolean isNight() {
+        var calendar = Calendar.getInstance();
+        var hour = calendar.get(Calendar.HOUR_OF_DAY);
+        return hour >= 18 || hour <= 6;
     }
 
     private void renderEntities(Renderer renderer, World world) {
         for (var entity : world.getEntities()) {
             if (entity == null) continue;
             if (entity.isVisible()) {
-                if (entity instanceof Player) {
-                    var player = (Player) entity;
+                if (entity instanceof Player player) {
                     RenderEvents.RENDER_PLAYER_BEFORE.factory().onRenderPlayerBefore(player, renderer);
                 }
                 RenderEvents.RENDER_ENTITY_BEFORE.factory().onRenderEntityBefore(entity, renderer);

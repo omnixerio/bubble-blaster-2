@@ -1826,6 +1826,10 @@ public final class BubbleBlaster extends ApplicationAdapter implements CrashFill
         return this.currentRenderer;
     }
 
+    public SpriteBatch getBatch() {
+        return this.batch;
+    }
+
     @SuppressWarnings("RedundantIfStatement")
     @ApiStatus.Internal
     @CanIgnoreReturnValue

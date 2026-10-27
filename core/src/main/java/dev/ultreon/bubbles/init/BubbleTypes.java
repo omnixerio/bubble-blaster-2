@@ -63,7 +63,7 @@ public class BubbleTypes {
             .radius(15, 85)
             .speed(3.215d, 4.845d)
             .score(0.2, 0.6)
-            .colors("#ff0000,#ff3f00,#ff7f00,#ffbf00")
+            .colors("#ffffffff,#ffffff80,#ffffff40,#ffffff20,#ffffff10,#ffffff08,#ffffff04,#ffffff02")
             .bounceAmount(30)
             .build());
     public static final BubbleType BUBBLE_FREEZE = BubbleTypes.register("bubble_freeze", new BubbleFreezeBubble());

@@ -123,6 +123,7 @@ dependencies {
     implementation "com.badlogicgames.gdx:gdx-platform:$gdx_version:natives-desktop"
     implementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdx_controllers_version"
     implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdx_version:natives-desktop"
+    implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdx_version:natives-desktop"
 
     // GDX Visual Effects
     implementation 'com.crashinvaders.vfx:gdx-vfx-core:0.5.0'
