@@ -20,8 +20,8 @@ buildscript {
     }
 
     dependencies {
-        classpath group: 'commons-io', name: 'commons-io', version: '2.11.0'
-        classpath "com.google.code.gson:gson:2.10.1"
+        classpath "commons-io:commons-io:2.22.0"
+        classpath "com.google.code.gson:gson:2.14.0"
     }
 }
 
@@ -108,7 +108,8 @@ dependencies {
     api "dev.ultreon.corelibs:resources-v0:0.3.0"
     api "dev.ultreon.corelibs:text-v0:0.3.0"
     api "dev.ultreon.corelibs:translations-v0:0.3.0"
-    api "dev.ultreon.corelibs:translations-v1:0.3.0"
+    api "dev.ultreon.corelibs:translations-v0:0.3.0"
+    api "dev.ultreon:ubo:1.8.0"
 
     // Apis
     api "com.google.code.gson:gson:2.10.1!!"
