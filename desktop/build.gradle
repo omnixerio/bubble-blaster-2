@@ -95,7 +95,7 @@ dependencies {
 
     // Google
     implementation "com.google.code.findbugs:jsr305:3.0.2"
-    implementation "com.google.guava:guava:33.7.2-jre"
+    implementation "com.google.guava:guava:33.7.1-jre"
     implementation "com.google.code.gson:gson:2.10.1!!"
 
     // SLF4J
@@ -124,7 +124,7 @@ dependencies {
 
     // Google
     implementation "com.google.code.gson:gson:2.10.1"
-    implementation 'com.google.guava:guava:33.7.2-jre'
+    implementation 'com.google.guava:guava:33.7.1-jre'
 
     // Misc
     implementation 'it.unimi.dsi:fastutil:8.5.12'

@@ -12,7 +12,7 @@ dependencies {
         exclude(group: 'com.google.guava', module: 'guava')
     }
 
-    compileOnly api("com.google.guava:guava:33.1.0-jre")
+    compileOnly api("com.google.guava:guava:33.7.1-jre")
 }
 
 java {
