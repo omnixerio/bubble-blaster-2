@@ -103,7 +103,7 @@ dependencies {
 
     // Google
     pack implementation("com.google.code.gson:gson:2.10.1")
-    pack implementation('com.google.guava:guava:32.0.0-jre')
+    pack implementation('com.google.guava:guava:33.7.1-jre')
 
     // Misc
     pack implementation('it.unimi.dsi:fastutil:8.5.12')
