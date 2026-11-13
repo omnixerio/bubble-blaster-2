@@ -14,14 +14,13 @@ import dev.ultreon.bubbles.render.gui.widget.Circle;
 import dev.ultreon.bubbles.render.gui.widget.Container;
 import dev.ultreon.libs.crash.v0.CrashLog;
 import dev.ultreon.bubbles.text.TextObject;
-import org.checkerframework.common.value.qual.IntRange;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class Screen extends Container implements CrashFiller {
     protected final BubbleBlaster game = BubbleBlaster.getInstance();
     private GuiComponent focused;
-    @IntRange(from = 0)
+    
     private int focusIndex = 0;
     private Screen backScreen;
 
@@ -166,10 +165,7 @@ public abstract class Screen extends Container implements CrashFiller {
     }
 
     public void renderBackground(Renderer renderer) {
-        if (this.game.world != null)
-            renderer.fillGradient(0, 0, this.getWidth(), this.getHeight(), Colors.rgba(0x00, 0x00, 0x00, 0x80), Colors.rgba(0x00, 0x00, 0x00, 0x60), Axis2D.VERTICAL);
-        else
-            renderer.fill(0, 0, this.getWidth(), this.getHeight(), Colors.grayscale(0x1e));
+        renderer.fillGradient(0, 0, this.getWidth(), this.getHeight(), Colors.rgba(0x00, 0x00, 0x00, 0x80), Colors.rgba(0x00, 0x00, 0x00, 0x60), Axis2D.VERTICAL);
     }
 
     /**

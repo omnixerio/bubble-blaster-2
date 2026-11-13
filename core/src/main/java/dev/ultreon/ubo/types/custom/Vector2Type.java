@@ -19,26 +19,26 @@ public interface Vector2Type<T, V> extends DataType<T>, VectorType<V> {
     }
 
     default void set(V x, V y) {
-        setX(x);
-        setY(y);
+        this.setX(x);
+        this.setY(y);
     }
 
     @Override
     default void fill(V value) {
-        set(value, value);
+        this.set(value, value);
     }
 
     @Override
     default V get(int index) {
-        if (index == 0) return getX();
-        if (index == 1) return getY();
+        if (index == 0) return this.getX();
+        if (index == 1) return this.getY();
         throw new IndexOutOfBoundsException();
     }
 
     @Override
     default void set(int index, V value) {
-        if (index == 0) setX(value);
-        if (index == 1) setY(value);
+        if (index == 0) this.setX(value);
+        if (index == 1) this.setY(value);
     }
 
     @Override

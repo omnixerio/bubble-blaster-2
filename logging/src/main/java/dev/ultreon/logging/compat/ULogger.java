@@ -22,12 +22,12 @@
  * THE SOFTWARE.
  */
 
-package net.quantumvoxel.logging.compat;
+package dev.ultreon.logging.compat;
 
-import net.quantumvoxel.logging.LogCategory;
-import net.quantumvoxel.logging.LogLevel;
-import net.quantumvoxel.logging.Logger;
-import net.quantumvoxel.logging.LoggerManager;
+import dev.ultreon.logging.LogCategory;
+import dev.ultreon.logging.LogLevel;
+import dev.ultreon.logging.Logger;
+import dev.ultreon.logging.LoggerManager;
 import org.slf4j.Marker;
 import org.slf4j.event.Level;
 import org.slf4j.helpers.AbstractLogger;
@@ -100,7 +100,7 @@ class ULogger extends AbstractLogger {
 
     @Override
     protected void handleNormalizedLoggingCall(Level level, Marker marker, String messagePattern, Object[] arguments, Throwable throwable) {
-        var format = format(messagePattern, arguments);
+        var format = this.format(messagePattern, arguments);
         if (format == null) return;
         if (throwable != null) {
             if (format.getThrowable() != null) {
@@ -109,7 +109,7 @@ class ULogger extends AbstractLogger {
         } else if (format.getThrowable() != null) {
             throwable = format.getThrowable();
         }
-        this.logger.log(System.currentTimeMillis(), level(level), LogCategory.DEFAULT, format.getMessage(), throwable, false, false);
+        this.logger.log(System.currentTimeMillis(), this.level(level), LogCategory.DEFAULT, format.getMessage(), throwable, false, false);
     }
 
     private FormattingTuple format(String messagePattern, Object[] arguments) {

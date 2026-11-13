@@ -1,4 +1,4 @@
-package dev.ultreon.bubbles.entity.ammo;
+package dev.ultreon.bubbles.ammo;
 
 import com.badlogic.gdx.math.Shape2D;
 import com.google.common.annotations.Beta;
@@ -15,9 +15,8 @@ import dev.ultreon.bubbles.render.Renderer;
  *
  * @author XyperCode
  */
-@Beta
 public abstract class AmmoType {
-    public abstract void render(Renderer renderer, Bullet rotation);
+    public abstract void render(Renderer renderer, Bullet bullet);
 
     /**
      * Handles collision for the given bullet if the bullet has {@link AmmoType this} as ammo type.

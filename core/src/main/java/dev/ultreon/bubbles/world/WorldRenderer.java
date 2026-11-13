@@ -141,15 +141,30 @@ public class WorldRenderer implements Renderable {
      * Draw bubble.
      * Draws bubble on screen.
      *
+     * @param renderer     the graphics-2D instance
+     * @param x            the x-coordinate.
+     * @param y            the y-coordinate.
+     * @param radius       the bubble radius (full width.).
+     * @param destroyFrame
+     * @param type         the type of bubble to render.
+     */
+    public static void drawBubble(Renderer renderer, float x, float y, float radius, int destroyFrame, BubbleType type) {
+        WorldRenderer.drawBubble(renderer, x, y, radius, destroyFrame, type, WorldRenderer.isNight());
+    }
+
+    /**
+     * Draw bubble.
+     * Draws bubble on screen.
+     *
      * @param renderer      the graphics-2D instance
      * @param x      the x-coordinate.
      * @param y      the y-coordinate.
      * @param radius the bubble radius (full width.).
      * @param type   the type of bubble to render.
      */
-    public static void drawBubble(Renderer renderer, float x, float y, float radius, int destroyFrame, BubbleType type) {
+    public static void drawBubble(Renderer renderer, float x, float y, float radius, int destroyFrame, BubbleType type, boolean night) {
         float thickness = BubbleBlasterConfig.BUBBLE_LINE_THICKNESS.get();
-        if (type.getInsideTexture() == null && renderer.drawBubble(x, y, radius, thickness, thickness + 0.5f, type.getColors(), isNight())) {
+        if (type.getInsideTexture() == null && renderer.drawBubble(x, y, radius, thickness, thickness + 0.5f, type.getColors(), night)) {
             return;
         }
 

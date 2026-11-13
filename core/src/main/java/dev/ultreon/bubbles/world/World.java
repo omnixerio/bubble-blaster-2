@@ -55,11 +55,6 @@ import dev.ultreon.ubo.types.StringType;
 import it.unimi.dsi.fastutil.longs.Long2ReferenceArrayMap;
 import it.unimi.dsi.fastutil.longs.Long2ReferenceMap;
 import it.unimi.dsi.fastutil.longs.Long2ReferenceMaps;
-import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.common.value.qual.IntRange;
-import org.checkerframework.dataflow.qual.Pure;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.io.Closeable;
@@ -104,7 +99,7 @@ public final class World implements CrashFiller, Closeable {
 
     // Values:
     private long resultScore;
-    @IntRange(from = 0)
+    
     private long ticks;
 
     private final Difficulty.ModifierMap difficultyModifiers = new Difficulty.ModifierMap();
@@ -548,7 +543,7 @@ public final class World implements CrashFiller, Closeable {
         this.resultScore = resultScore;
     }
 
-    @IntRange(from = 0)
+    
     public long getTicks() {
         return this.ticks;
     }
@@ -560,7 +555,7 @@ public final class World implements CrashFiller, Closeable {
      * @return The bubble type.
      * @see BubbleSystem#random(RandomSource, World)
      */
-    @NonNull
+    
     public BubbleType getRandomBubble(RandomSource random) {
         var bubbleType = this.gamemode.randomBubble(random, this);
         if (bubbleType != null)
@@ -867,8 +862,8 @@ public final class World implements CrashFiller, Closeable {
         return this.seed;
     }
 
-    @EnsuresNonNullIf(expression = "getGameOverTime()", result = true)
-    public @Pure boolean isGameOver() {
+    
+    public  boolean isGameOver() {
         return this.gameOver;
     }
 
@@ -892,7 +887,7 @@ public final class World implements CrashFiller, Closeable {
         save.createFolders("registries");
     }
 
-    @Nullable
+    
     public Entity getEntityAt(Vector2 pos) {
         for (var entity : this.entitiesById.values()) {
             if (entity.getShape().contains(pos)) {
@@ -910,7 +905,7 @@ public final class World implements CrashFiller, Closeable {
         }
     }
 
-    @Nullable
+    
     public Entity getNearestEntity(Vector2D pos) {
         var distance = Double.MAX_VALUE;
         Entity nearest = null;
@@ -973,7 +968,7 @@ public final class World implements CrashFiller, Closeable {
         crashLog.addCategory(category);
     }
 
-    @Nullable
+    
     public Instant getGameOverTime() {
         return this.gameOverTime;
     }

@@ -23,32 +23,32 @@ public interface Vector4Type<T, V> extends DataType<T>, VectorType<V> {
     }
 
     default void set(V x, V y, V z, V w) {
-        setX(x);
-        setY(y);
-        setZ(z);
-        setW(w);
+        this.setX(x);
+        this.setY(y);
+        this.setZ(z);
+        this.setW(w);
     }
 
     @Override
     default V get(int index) {
-        if (index == 0) return getX();
-        if (index == 1) return getY();
-        if (index == 2) return getZ();
-        if (index == 3) return getW();
+        if (index == 0) return this.getX();
+        if (index == 1) return this.getY();
+        if (index == 2) return this.getZ();
+        if (index == 3) return this.getW();
         throw new IndexOutOfBoundsException("Index out of bounds: " + index);
     }
 
     @Override
     default void set(int index, V value) {
-        if (index == 0) setX(value);
-        if (index == 1) setY(value);
-        if (index == 2) setZ(value);
-        if (index == 3) setW(value);
+        if (index == 0) this.setX(value);
+        if (index == 1) this.setY(value);
+        if (index == 2) this.setZ(value);
+        if (index == 3) this.setW(value);
         throw new IndexOutOfBoundsException("Index out of bounds: " + index);
     }
 
     default void fill(V value) {
-        set(value, value, value, value);
+        this.set(value, value, value, value);
     }
 
     @Override

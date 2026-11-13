@@ -124,13 +124,13 @@ public class BB2GameProvider implements GameProvider {
     }
 
     @Override
-    public boolean isObfuscated() {
+    public boolean requiresUrlClassLoader() {
         return false;
     }
 
     @Override
-    public boolean requiresUrlClassLoader() {
-        return false;
+    public Set<BuiltinTransform> getBuiltinTransforms(String className) {
+        return Set.of();
     }
 
     @Override
@@ -205,7 +205,7 @@ public class BB2GameProvider implements GameProvider {
 
         // expose obfuscated jar locations for mods to more easily remap code from obfuscated to intermediary
         var share = FabricLoaderImpl.INSTANCE.getObjectShare();
-        share.put("fabric-loader:inputGameJar", this.gameJars.get(0)); // deprecated
+        share.put("fabric-loader:inputGameJar", this.gameJars.getFirst()); // deprecated
         share.put("fabric-loader:inputGameJars", this.gameJars);
 
         return true;
@@ -280,7 +280,7 @@ public class BB2GameProvider implements GameProvider {
     }
 
     public Path getGameJar() {
-        return this.gameJars.get(0);
+        return this.gameJars.getFirst();
     }
 
     @Override

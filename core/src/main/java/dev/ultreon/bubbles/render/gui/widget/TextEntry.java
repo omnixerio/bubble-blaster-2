@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Rectangle;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import dev.ultreon.bubbles.config.Config;
 import dev.ultreon.bubbles.render.Colors;
 import dev.ultreon.bubbles.render.Insets;
@@ -14,10 +15,6 @@ import dev.ultreon.libs.commons.v0.Mth;
 import dev.ultreon.libs.commons.v0.size.IntSize;
 import dev.ultreon.libs.commons.v0.vector.Vec2i;
 import dev.ultreon.bubbles.text.TextObject;
-import org.checkerframework.com.google.errorprone.annotations.CanIgnoreReturnValue;
-import org.checkerframework.common.reflection.qual.NewInstance;
-import org.checkerframework.common.returnsreceiver.qual.This;
-import org.checkerframework.common.value.qual.IntRange;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,10 +33,10 @@ public class TextEntry extends GuiComponent {
     protected boolean activated;
     protected int entryWidth;
 
-    private Predicate<String> responder = text -> true;
+    private Predicate<String> responder = _ -> true;
     String validText;
 
-    protected TextEntry(int x, int y, @IntRange(from = 0) int width, @IntRange(from = 0) int height) {
+    protected TextEntry(int x, int y,  int width,  int height) {
         super(x, y, width, height);
     }
 
@@ -256,13 +253,13 @@ public class TextEntry extends GuiComponent {
         private String text = "";
         private int entryWidth = -1;
         private TextObject label = TextObject.EMPTY;
-        private Predicate<String> responder = s -> true;
+        private Predicate<String> responder = _ -> true;
 
         public Builder() {
 
         }
 
-        public @NewInstance TextEntry build() {
+        public  TextEntry build() {
             if (this.bounds == null) throw new IllegalArgumentException("Missing bounds for creating text entry.");
             if (this.entryWidth == -1) throw new IllegalArgumentException("Missing entry width for creating text entry.");
 
@@ -275,22 +272,22 @@ public class TextEntry extends GuiComponent {
             return entry;
         }
 
-        public @This Builder bounds(Rectangle bounds) {
+        public  Builder bounds(Rectangle bounds) {
             this.bounds = bounds;
             return this;
         }
 
-        public @This Builder bounds(int x, int y, int width, int height) {
+        public  Builder bounds(int x, int y, int width, int height) {
             this.bounds = new Rectangle(x, y, width, height);
             return this;
         }
 
-        public @This Builder bounds(Vec2i pos, IntSize size) {
+        public  Builder bounds(Vec2i pos, IntSize size) {
             this.bounds = new Rectangle(pos.x, pos.y, size.width(), size.height());
             return this;
         }
 
-        public @This Builder text(String text) {
+        public  Builder text(String text) {
             this.text = text;
             return this;
         }
@@ -301,20 +298,20 @@ public class TextEntry extends GuiComponent {
         }
 
         @CanIgnoreReturnValue
-        public @This Builder entryWidth(int width) {
+        public  Builder entryWidth(int width) {
             if (width < 0) throw new IllegalArgumentException("Entry width should be non-negative.");
             this.entryWidth = width;
             return this;
         }
 
         @CanIgnoreReturnValue
-        public @This Builder responder(Predicate<@NotNull String> responder) {
+        public  Builder responder(Predicate<@NotNull String> responder) {
             this.responder = responder;
             return this;
         }
 
         @CanIgnoreReturnValue
-        public @This Builder responder(Consumer<@NotNull String> responder) {
+        public  Builder responder(Consumer<@NotNull String> responder) {
             this.responder = s -> {
                 responder.accept(s);
                 return true;
@@ -322,11 +319,11 @@ public class TextEntry extends GuiComponent {
             return this;
         }
 
-        public @This Builder label(@Nullable String label) {
+        public  Builder label(@Nullable String label) {
             return this.label(TextObject.nullToEmpty(label));
         }
 
-        public @This Builder label(TextObject label) {
+        public  Builder label(TextObject label) {
             this.label = label;
             return this;
         }

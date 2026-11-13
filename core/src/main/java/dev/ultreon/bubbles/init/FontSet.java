@@ -50,22 +50,22 @@ public final class FontSet extends BitmapFont {
             default -> "";
         };
         var key = script + ":" + language;
-        return fonts.computeIfAbsent(key, ignored -> {
-            if (!family.equals("noto_sans")) {
-                return BubbleBlaster.createBitmapFont(BubbleBlaster.id(family), size);
+        return this.fonts.computeIfAbsent(key, ignored -> {
+            if (!this.family.equals("noto_sans")) {
+                return BubbleBlaster.createBitmapFont(BubbleBlaster.id(this.family), this.size);
             }
             var base = script.isEmpty() ? "noto_sans/noto_sans_" : "noto_sans/noto_sans_" + script + "_";
-            var id = BubbleBlaster.id(base + style);
+            var id = BubbleBlaster.id(base + this.style);
             try {
-                return BubbleBlaster.createBitmapFont(id, size);
+                return BubbleBlaster.createBitmapFont(id, this.size);
             } catch (RuntimeException ex) {
-                return BubbleBlaster.createBitmapFont(BubbleBlaster.id("noto_sans/noto_sans_" + style), size);
+                return BubbleBlaster.createBitmapFont(BubbleBlaster.id("noto_sans/noto_sans_" + this.style), this.size);
             }
         });
     }
 
-    @Override public float getLineHeight() { return get().getLineHeight(); }
-    @Override public float getDescent() { return get().getDescent(); }
-    @Override public float getXHeight() { return get().getXHeight(); }
-    @Override public float getCapHeight() { return get().getCapHeight(); }
+    @Override public float getLineHeight() { return this.get().getLineHeight(); }
+    @Override public float getDescent() { return this.get().getDescent(); }
+    @Override public float getXHeight() { return this.get().getXHeight(); }
+    @Override public float getCapHeight() { return this.get().getCapHeight(); }
 }

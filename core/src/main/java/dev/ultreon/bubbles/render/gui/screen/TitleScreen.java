@@ -13,8 +13,6 @@ import dev.ultreon.bubbles.text.TextObject;
 
 public class TitleScreen extends Screen {
 
-    private TitleScreenBackground background;
-
     public TitleScreen() {
 
     }
@@ -46,13 +44,7 @@ public class TitleScreen extends Screen {
 
     @Override
     public void init() {
-        if (this.background != null) {
-            this.background.dispose();
-        }
-
         this.clearWidgets();
-
-        this.background = new TitleScreenBackground(this.width, this.height);
 
         if (this.game.menuMusic.isStopped() || this.game.menuMusic.isPaused()) {
             this.game.menuMusic.play();
@@ -65,25 +57,31 @@ public class TitleScreen extends Screen {
                 .font(Fonts.SANS_BIG.get())
                 .build());
         this.add(Button.builder()
-                .bounds(this.width / 2 - 200, 300, 190, 60)
+                .bounds(this.width / 2 - 200, 300, 400, 60)
+                .text(TextObject.translation("bubbleblaster.screen.title.shop"))
+                .command(this::openShop)
+                .font(Fonts.SANS_BIG.get())
+                .build());
+        this.add(Button.builder()
+                .bounds(this.width / 2 - 200, 380, 190, 60)
                 .text(TextObject.translation("bubbleblaster.screen.title.mods"))
                 .command(this::openModList)
                 .font(Fonts.SANS_BIG.get())
                 .build());
         this.add(Button.builder()
-                .bounds(this.width / 2 + 10, 300, 190, 60)
+                .bounds(this.width / 2 + 10, 380, 190, 60)
                 .text(TextObject.translation("bubbleblaster.screen.title.options"))
                 .command(this::openOptions)
                 .font(Fonts.SANS_BIG.get())
                 .build());
         this.add(Button.builder()
-                .bounds(this.width / 2 - 200, 380, 190, 60)
+                .bounds(this.width / 2 - 200, 460, 190, 60)
                 .text(TextObject.translation("bubbleblaster.screen.title.language"))
                 .command(this::openLanguageSettings)
                 .font(Fonts.SANS_BIG.get())
                 .build());
         this.add(Button.builder()
-                .bounds(this.width / 2 + 10, 380, 190, 60)
+                .bounds(this.width / 2 + 10, 460, 190, 60)
                 .text(TextObject.translation("bubbleblaster.screen.title.quit"))
                 .command(this.game::shutdown)
                 .font(Fonts.SANS_BIG.get())
@@ -96,6 +94,10 @@ public class TitleScreen extends Screen {
                 .build());
     }
 
+    private void openShop() {
+        this.game.showScreen(new ShopScreen());
+    }
+
     private void resetData() {
         this.game.showScreen(new ConfirmScreen(() -> {
             var globalData = this.game.getGlobalData();
@@ -106,17 +108,10 @@ public class TitleScreen extends Screen {
     @Override
     public void tick() {
         super.tick();
-
-        var background = this.background;
-        if (background != null) {
-            background.tick();
-        }
     }
 
     @Override
     public void render(BubbleBlaster game, Renderer renderer, int mouseX, int mouseY, float deltaTime) {
-        this.background.render(renderer);
-
         renderer.fill(0, 0, this.width, 175, Colors.grayscale(0x1e));
 
         renderer.fillEffect(0, 175, this.width, 3);

@@ -110,7 +110,7 @@ public class DoubleArrayType implements ArrayType<double[], Double> {
 
     @Override
     public String toString() {
-        return writeUso();
+        return this.writeUso();
     }
 
     @Override

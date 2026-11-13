@@ -22,11 +22,9 @@
  * THE SOFTWARE.
  */
 
-package net.quantumvoxel.logging;
+package dev.ultreon.logging;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -70,8 +68,8 @@ public class LoggerManager {
             }
         }
 
-        compressIfExists(this.path.resolve("logs/latest.log"));
-        compressIfExists(this.path.resolve("logs/debug.log"));
+        this.compressIfExists(this.path.resolve("logs/latest.log"));
+        this.compressIfExists(this.path.resolve("logs/debug.log"));
 
         try {
             this.debugOut = new MultiPrintStream(true, System.out, new PrintStream(new ANSIEscapingOutputStream(Files.newOutputStream(
@@ -90,7 +88,7 @@ public class LoggerManager {
 
     private void compressIfExists(Path path) {
         if (Files.exists(path)) {
-            compress(path, this.path.resolve("logs/latest.log.gz"));
+            this.compress(path, this.path.resolve("logs/latest.log.gz"));
         }
     }
 

@@ -1,8 +1,6 @@
 package dev.ultreon.bubbles.notification;
 
 import dev.ultreon.libs.datetime.v0.Duration;
-import org.checkerframework.common.reflection.qual.NewInstance;
-import org.checkerframework.common.returnsreceiver.qual.This;
 
 import java.util.Locale;
 
@@ -93,22 +91,22 @@ public class Notification {
             this.summary = summary;
         }
 
-        public @This Builder subText(String subText) {
+        public  Builder subText(String subText) {
             this.subText = subText;
             return this;
         }
 
-        public @This Builder duration(Duration duration) {
+        public  Builder duration(Duration duration) {
             this.duration = duration;
             return this;
         }
 
-        public @This Builder sticky() {
+        public  Builder sticky() {
             this.sticky = true;
             return this;
         }
 
-        public @NewInstance Notification build() {
+        public  Notification build() {
             return new Notification(this);
         }
     }

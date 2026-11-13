@@ -13,14 +13,14 @@ public interface Tuple2Type<T, A, B> extends DataType<T> {
     void setB(B b);
 
     default <R> R map(BiFunction<A, B, R> mapper) {
-        return mapper.apply(getA(), getB());
+        return mapper.apply(this.getA(), this.getB());
     }
 
     default <R> R mapA(Function<A, R> mapper) {
-        return mapper.apply(getA());
+        return mapper.apply(this.getA());
     }
 
     default <R> R mapB(Function<B, R> mapper) {
-        return mapper.apply(getB());
+        return mapper.apply(this.getB());
     }
 }

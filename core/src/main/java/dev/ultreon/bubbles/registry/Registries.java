@@ -7,7 +7,7 @@ import dev.ultreon.bubbles.audio.SoundEvent;
 import dev.ultreon.bubbles.bubble.BubbleType;
 import dev.ultreon.bubbles.common.gamestate.GameplayEvent;
 import dev.ultreon.bubbles.effect.StatusEffect;
-import dev.ultreon.bubbles.entity.ammo.AmmoType;
+import dev.ultreon.bubbles.ammo.AmmoType;
 import dev.ultreon.bubbles.entity.flags.EntityFlag;
 import dev.ultreon.bubbles.entity.player.ability.AbilityType;
 import dev.ultreon.bubbles.entity.types.EntityType;
@@ -32,7 +32,6 @@ public class Registries {
     public static final Registry<FontSet> BITMAP_FONTS = Registry.create(new Identifier("font"));
     public static final Registry<Gamemode> GAMEMODES = Registry.create(new Identifier("gamemode"));
     public static final Registry<Cursor> CURSORS = Registry.create(new Identifier("cursor"));
-    @Beta
     public static final Registry<ItemType> ITEMS = Registry.create(new Identifier("item"));
     public static final Registry<TextureCollection> TEXTURE_COLLECTIONS = Registry.create(new Identifier("texture_collection"));
     public static final Registry<SoundEvent> SOUNDS = Registry.create(new Identifier("sound"));

@@ -3,7 +3,7 @@ package dev.ultreon.bubbles.entity;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Shape2D;
 import dev.ultreon.bubbles.Constants;
-import dev.ultreon.bubbles.entity.ammo.AmmoType;
+import dev.ultreon.bubbles.ammo.AmmoType;
 import dev.ultreon.bubbles.entity.attribute.Attribute;
 import dev.ultreon.bubbles.entity.player.Player;
 import dev.ultreon.bubbles.gamemode.openworld.OpenWorldMode;
@@ -14,7 +14,6 @@ import dev.ultreon.bubbles.vector.Vector2D;
 import dev.ultreon.bubbles.world.World;
 import dev.ultreon.bubbles.util.annotation.FieldsAreNonnullByDefault;
 import dev.ultreon.bubbles.util.annotation.MethodsReturnNonnullByDefault;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -32,7 +31,11 @@ public class Bullet extends Entity {
         this(AmmoTypes.BASIC, new Vector2D(), 0, world);
     }
 
-    public Bullet(@NotNull AmmoType type, Vector2D pos, float rotation, World world) {
+    public Bullet(World world, AmmoType ammoType) {
+        this(ammoType, new Vector2D(), 0, world);
+    }
+
+    public Bullet(AmmoType type, Vector2D pos, float rotation, World world) {
         super(Entities.BULLET, world);
 
         this.pos.set(pos);

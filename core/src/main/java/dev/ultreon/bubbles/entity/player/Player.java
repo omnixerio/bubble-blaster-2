@@ -1,24 +1,21 @@
 package dev.ultreon.bubbles.entity.player;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.*;
 import dev.ultreon.bubbles.*;
-import dev.ultreon.bubbles.effect.BlindnessStatusEffect;
-import dev.ultreon.bubbles.effect.StatusEffectInstance;
+import dev.ultreon.bubbles.effect.StatusEffect;
 import dev.ultreon.bubbles.entity.Bubble;
 import dev.ultreon.bubbles.entity.Bullet;
 import dev.ultreon.bubbles.entity.Entity;
 import dev.ultreon.bubbles.entity.LivingEntity;
-import dev.ultreon.bubbles.entity.ammo.AmmoType;
 import dev.ultreon.bubbles.entity.attribute.Attribute;
 import dev.ultreon.bubbles.entity.damage.EntityDamageSource;
 import dev.ultreon.bubbles.entity.player.ability.AbilityContainer;
 import dev.ultreon.bubbles.entity.spawning.SpawnInformation;
 import dev.ultreon.bubbles.event.v1.PlayerEvents;
 import dev.ultreon.bubbles.gamemode.openworld.OpenWorldMode;
-import dev.ultreon.bubbles.init.AmmoTypes;
 import dev.ultreon.bubbles.init.Entities;
 import dev.ultreon.bubbles.init.StatusEffects;
+import dev.ultreon.bubbles.item.AmmoItem;
 import dev.ultreon.bubbles.item.collection.PlayerItemCollection;
 import dev.ultreon.bubbles.player.InputController;
 import dev.ultreon.bubbles.registry.Registries;
@@ -33,34 +30,10 @@ import dev.ultreon.ubo.types.MapType;
 import dev.ultreon.libs.commons.v0.Mth;
 import dev.ultreon.libs.datetime.v0.Duration;
 import org.apache.commons.lang3.SystemUtils;
-import org.checkerframework.checker.guieffect.Effect;
 import org.jetbrains.annotations.NotNull;
 
 import static dev.ultreon.bubbles.BubbleBlaster.TPS;
 
-/**
- * <p>These are the vertex coordinates:</p>
- * <br>
- * <pre>
- * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|- Middle point<br>
- * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
- * 9876543210123456789<br>
- * --------------------,<br>
- * ....#*********#.....| -8<br>
- * ....*.........*.....| -7<br>
- * ....#***#.#***#.....| -6<br>
- * ........*.*.........| -5<br>
- * ..#*****#.#******#..| -4<br>
- * .*..................| -3<br>
- * #..................#| -2<br>
- * *..................*| -1<br>
- * *..................*| 0  // Middle point.<br>
- * *..................*| 1<br>
- * #..................#| 2<br>
- * .*................*.| 3<br>
- * ..#..............#..| 4<br>
- * </pre>
- */
 public class Player extends LivingEntity implements InputController {
     private static final float[] ARROW_VERTICES = {
             -5, 0,
@@ -76,8 +49,7 @@ public class Player extends LivingEntity implements InputController {
     private boolean joinInvincibility;
     private int invincibilityTicks;
 
-    // Types
-    private AmmoType currentAmmo = AmmoTypes.BASIC;
+    public final Hotbar hotbar = new Hotbar();
 
     // Motion (Arrow Keys).
     private float moving = 0f;
@@ -664,28 +636,6 @@ public class Player extends LivingEntity implements InputController {
     }
 
     /**
-     * Get current ammo type.
-     *
-     * @return the current {@link AmmoType ammo type}.
-     * @see AmmoType
-     * @see #setCurrentAmmo(AmmoType)
-     */
-    public AmmoType getCurrentAmmo() {
-        return this.currentAmmo;
-    }
-
-    /**
-     * Set current ammo type.
-     *
-     * @param currentAmmo the ammo to set.
-     * @see AmmoType
-     * @see #getCurrentAmmo()
-     */
-    public void setCurrentAmmo(AmmoType currentAmmo) {
-        this.currentAmmo = currentAmmo;
-    }
-
-    /**
      * Deactivate / activate the forwards motion.
      *
      * @param val amount to move forward/backward,
@@ -731,29 +681,27 @@ public class Player extends LivingEntity implements InputController {
         return 20;
     }
 
-    /**
-     * Shoot a bullet from the {@linkplain #getCurrentAmmo() current ammo}.
-     *
-     * @see #setCurrentAmmo(AmmoType)
-     */
     public void shoot() {
         this.shoot(false);
     }
 
-    /**
-     * Shoot a bullet from the {@linkplain #getCurrentAmmo() current ammo}.
-     *
-     * @see #setCurrentAmmo(AmmoType)
-     */
     public void shoot(boolean force) {
-        if (force || this.canShoot()) {
-            this.shootCooldown = TimeProcessor.millisToTicks(Constants.SHOOT_COOLDOWN);
+        var selected = this.hotbar.getSelected();
+        var selectedItem = this.hotbar.get(selected);
+        if (selectedItem == null) return;
+        if (!(selectedItem.getType() instanceof AmmoItem ammoItem)) return;
+        if (!force && !this.canShoot()) return;
 
-            var bulletPos = this.pos.cpy();
-            var bullet = new Bullet(this.currentAmmo, bulletPos, this.rotation, this.world);
-            bullet.setOwner(this);
-            this.world.spawn(bullet, SpawnInformation.triggeredSpawn(this, this.world));
+        if (!selectedItem.shrink(1)) {
+            this.hotbar.set(selected, null);
         }
+
+        this.shootCooldown = TimeProcessor.millisToTicks(Constants.SHOOT_COOLDOWN);
+
+        var bulletPos = this.pos.cpy();
+        var bullet = new Bullet(ammoItem.getAmmoType(), bulletPos, this.rotation, this.world);
+        bullet.setOwner(this);
+        this.world.spawn(bullet, SpawnInformation.triggeredSpawn(this, this.world));
     }
 
     public void boost() {
@@ -814,7 +762,7 @@ public class Player extends LivingEntity implements InputController {
         return this.hasEffect(StatusEffects.BLINDNESS);
     }
 
-    private boolean hasEffect(BlindnessStatusEffect effect) {
+    private boolean hasEffect(StatusEffect effect) {
         for (var statusEffect : this.statusEffects) {
             if (statusEffect.getType() == effect) {
                 return true;

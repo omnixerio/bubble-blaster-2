@@ -11,7 +11,6 @@ import dev.ultreon.bubbles.GameWindow;
 import dev.ultreon.bubbles.event.v1.WindowEvents;
 import dev.ultreon.bubbles.util.exceptions.OneTimeUseException;
 import dev.ultreon.libs.commons.v0.Identifier;
-import org.checkerframework.common.value.qual.IntRange;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Marker;
@@ -30,7 +29,7 @@ public class AndroidGameWindow implements GameWindow {
 
     private boolean initialized = false;
 
-    @IntRange(from = 0)
+    
     private int fps;
     private Thread mainThread;
     private boolean visible;

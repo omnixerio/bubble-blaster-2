@@ -2,11 +2,8 @@
 
 
 import dev.ultreon.gameutils.GameUtilsExt
-import org.jetbrains.gradle.ext.Application
-import org.mini2Dx.butler.task.PushTask
 
 import java.nio.file.Files
-import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
 
 buildscript {
@@ -259,7 +256,7 @@ tasks.withType(Jar).configureEach {
     duplicatesStrategy DuplicatesStrategy.INCLUDE
 }
 
-task createExec {
+tasks.register('createExec') {
     doFirst {
         if (!file("build").exists()) {
             mkdir "build"
@@ -307,11 +304,11 @@ println("OS: " + System.getProperty("os.name") + " Version: " + System.getProper
 println("Current version: " + version)
 println("Project: " + group + ":" + name)
 
-mkdir("$buildDir/bubbles")
+mkdir("${layout.buildDirectory.asFile.get()}/bubbles")
 
 def ps = System.getProperty("path.separator")
-//\tfabric.remapClasspathFile=$buildDir/bubbles/classpath.txt
-//\tfabric.classPathGroups=$buildDir/classes/java/main/$ps$buildDir/resources/main/$ps${project(":core").buildDir}/classes/java/main/$ps${project(":core").buildDir}/resources/main/$ps${project(":desktop").buildDir}/classes/java/main/$ps${project(":desktop").buildDir}/resources/main/$ps${project(":gameprovider").buildDir}/classes/java/main/$ps${project(":gameprovider").buildDir}/resources/main/$ps$rcl
+//\tfabric.remapClasspathFile=${layout.buildDirectory.asFile.get()}/bubbles/classpath.txt
+//\tfabric.classPathGroups=${layout.buildDirectory.asFile.get()}/classes/java/main/$ps${layout.buildDirectory.asFile.get()}/resources/main/$ps${project(":core").layout.buildDirectory.asFile.get()}/classes/java/main/$ps${project(":core").layout.buildDirectory.asFile.get()}/resources/main/$ps${project(":desktop").layout.buildDirectory.asFile.get()}/classes/java/main/$ps${project(":desktop").layout.buildDirectory.asFile.get()}/resources/main/$ps${project(":gameprovider").layout.buildDirectory.asFile.get()}/classes/java/main/$ps${project(":gameprovider").layout.buildDirectory.asFile.get()}/resources/main/$ps$rcl
 def conf = """
 commonProperties
 \tfabric.development=true
@@ -320,16 +317,16 @@ commonProperties
 \tlog4j.configurationFile=$projectDir/log4j.xml
 """
 
-def launchFile = file("$buildDir/bubbles/launch.cfg")
+def launchFile = file("${layout.buildDirectory.asFile.get()}/bubbles/launch.cfg")
 def prepareLaunchConfig = tasks.register('prepareLaunchConfig') {
-    outputs.files(launchFile, file("$buildDir/bubbles/classpath.txt"))
+    outputs.files(launchFile, file("${layout.buildDirectory.asFile.get()}/bubbles/classpath.txt"))
     doLast {
         def rcl = configurations.runtimeClasspath.files
                 .collect { it.path }
                 .join(ps)
         Files.writeString(launchFile.toPath(), conf, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE)
 
-        def cpFile = file("$buildDir/bubbles/classpath.txt")
+        def cpFile = file("${layout.buildDirectory.asFile.get()}/bubbles/classpath.txt")
         Files.writeString(cpFile.toPath(), rcl, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE)
     }
 }
@@ -341,32 +338,3 @@ application {
 
 run.workingDir("$rootProject.projectDir/run")
 run.dependsOn(prepareLaunchConfig)
-
-butler {
-    user = "xypercode"
-    game = "bubble-blaster"
-    updateButler = true
-    allChannelsPostfix = "-beta"
-}
-
-tasks.register('butlerPushWindows', PushTask) {
-    dependsOn build, ":desktop-merge:jpackage"
-    binDirectory = file("$projectDir/desktop-merge/build/bin/windows")
-    channel = "windows"
-}
-
-tasks.register('butlerPushLinux', PushTask) {
-    dependsOn build, ":desktop-merge:jpackage"
-    binDirectory = file("$projectDir/desktop-merge/build/bin/linux")
-    channel = "linux"
-}
-
-tasks.register('butlerPushMac', PushTask) {
-    dependsOn build, ":desktop-merge:jpackage"
-    binDirectory = file("$projectDir/desktop-merge/build/bin/mac")
-    channel = "mac"
-}
-
-tasks.register('butlerPushAll') {
-    dependsOn butlerPushWindows, butlerPushLinux, butlerPushMac
-}

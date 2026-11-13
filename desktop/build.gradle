@@ -20,7 +20,7 @@ buildscript {
     }
 
     dependencies {
-        classpath group: 'commons-io', name: 'commons-io', version: "$commons_io_version"
+        classpath group: 'commons-io', name: 'commons-io', version: "2.22.0"
         classpath "com.google.code.gson:gson:2.10.1"
     }
 }
@@ -29,14 +29,10 @@ buildscript {
 //     Plugins     //
 //*****************//
 plugins {
-//    id 'java'
-//    id 'java-library'
-//    id 'maven-publish'
-//    id "org.panteleyev.jpackageplugin"
+    id 'java'
+    id 'java-library'
+    id 'maven-publish'
 }
-
-apply plugin: 'java'
-//apply plugin: 'maven-publish'
 
 //****************************//
 // Setting up main properties //
@@ -58,142 +54,123 @@ dependencies {
     implementation project(":core")
 
     // Annotations
-    implementation "org.checkerframework:checker:$checker_framework_version"
-    implementation "org.jetbrains:annotations:$jetbrains_annotations_version"
+    implementation "org.jetbrains:annotations:23.0.0"
 
     // Test dependencies
-    testImplementation "org.junit.jupiter:junit-jupiter-api:$junit_version"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit_version"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.9.0"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.9.0"
 
     // FastUtil
-    implementation "it.unimi.dsi:fastutil:$fastutil_version"
-    implementation "it.unimi.dsi:fastutil-extra:$fastutil_extras_version"
-    implementation "it.unimi.dsi:fastutil-core:$fastutil_version"
+    implementation "it.unimi.dsi:fastutil:8.5.9"
+    implementation "it.unimi.dsi:fastutil-extra:8.5.4"
+    implementation "it.unimi.dsi:fastutil-core:8.5.9"
 
     // Misc
-    implementation "org.jetbrains:annotations:$jetbrains_annotations_version"
-    implementation "com.electronwill.night-config:toml_android:$nightconfig_version"
+    implementation "org.jetbrains:annotations:23.0.0"
+    implementation "com.electronwill.night-config:toml_android:3.6.6"
 
     // CoreLibs
-    implementation "dev.ultreon.corelibs:collections-v0:$corelibs_version"
-    implementation "dev.ultreon.corelibs:commons-v0:$corelibs_version"
-    implementation "dev.ultreon.corelibs:crash-v0:$corelibs_version"
-    implementation "dev.ultreon.corelibs:datetime-v0:$corelibs_version"
-    implementation "dev.ultreon.corelibs:events-v1:$corelibs_version"
-    implementation "dev.ultreon.corelibs:functions-v0:$corelibs_version"
-    implementation "dev.ultreon.corelibs:registries-v0:$corelibs_version"
-    implementation "dev.ultreon.corelibs:resources-v0:$corelibs_version"
-    implementation "dev.ultreon.corelibs:text-v0:$corelibs_version"
-    implementation "dev.ultreon.corelibs:translations-v0:$corelibs_version"
-    implementation "dev.ultreon.corelibs:translations-v1:$corelibs_version"
+    implementation "dev.ultreon.corelibs:collections-v0:0.3.0"
+    implementation "dev.ultreon.corelibs:commons-v0:0.3.0"
+    implementation "dev.ultreon.corelibs:crash-v0:0.3.0"
+    implementation "dev.ultreon.corelibs:datetime-v0:0.3.0"
+    implementation "dev.ultreon.corelibs:events-v1:0.3.0"
+    implementation "dev.ultreon.corelibs:functions-v0:0.3.0"
+    implementation "dev.ultreon.corelibs:registries-v0:0.3.0"
+    implementation "dev.ultreon.corelibs:resources-v0:0.3.0"
+    implementation "dev.ultreon.corelibs:text-v0:0.3.0"
+    implementation "dev.ultreon.corelibs:translations-v0:0.3.0"
+    implementation "dev.ultreon.corelibs:translations-v1:0.3.0"
 
     // Apis
-    implementation "commons-io:commons-io:$commons_io_version"
-    implementation "org.apache.commons:commons-lang3:$commons_lang_version"
-    implementation "org.apache.commons:commons-collections4:$commons_collections_version"
-    implementation "org.apache.commons:commons-text:$commons_text_version"
-    implementation "org.apache.commons:commons-math3:$commons_math_version"
-    implementation "org.apache.ant:ant:$ant_version"
+    implementation "commons-io:commons-io:2.22.0"
+    implementation "org.apache.commons:commons-lang3:3.21.0"
+    implementation "org.apache.commons:commons-collections4:4.4"
+    implementation "org.apache.commons:commons-text:1.10.0"
+    implementation "org.apache.commons:commons-math3:3.6.1"
+    implementation "org.apache.ant:ant:1.0.18"
 
     // Local jars.
     implementation fileTree(dir: "$projectDir/libs", include: ["*.jar"])
 
     // Google
-    implementation "com.google.code.findbugs:jsr305:$jsr_version"
-    implementation "com.google.guava:guava:$guava_version"
-    implementation "com.google.code.gson:gson:$gson_version"
-
-    // Apache
-    implementation "org.apache.logging.log4j:log4j:$log4j_version"
-    implementation "org.apache.logging.log4j:log4j-core:$log4j_version"
-    implementation "org.apache.logging.log4j:log4j-api:$log4j_version"
-    implementation("org.apache.logging.log4j:log4j-slf4j2-impl:$log4j_version") { exclude group: "org.slf4j" }
-    implementation "org.apache.logging.log4j:log4j-jcl:$log4j_version"
-    implementation "org.apache.logging.log4j:log4j-jul:$log4j_version"
-    implementation "org.apache.logging.log4j:log4j-web:$log4j_version"
+    implementation "com.google.code.findbugs:jsr305:3.0.2"
+    implementation "com.google.guava:guava:33.7.2-jre"
+    implementation "com.google.code.gson:gson:2.10.1!!"
 
     // SLF4J
-    implementation "org.slf4j:slf4j-api:$slf4j_version"
+    implementation "org.slf4j:slf4j-api:2.0.6"
 
     // OSHi (For system info in crash reports)
-    implementation "com.github.oshi:oshi-core:$oshi_version"
+    implementation "com.github.oshi:oshi-core:6.3.2"
 
     // LibGDX
-    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdx_version"
-    implementation "com.badlogicgames.gdx:gdx-platform:$gdx_version:natives-desktop"
-    implementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdx_controllers_version"
-    implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdx_version:natives-desktop"
-    implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdx_version:natives-desktop"
+    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:1.14.2"
+    implementation "com.badlogicgames.gdx:gdx-platform:1.14.2:natives-desktop"
+    implementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:2.2.3"
+    implementation "com.badlogicgames.gdx:gdx-freetype-platform:1.14.2:natives-desktop"
+    implementation "com.badlogicgames.gdx:gdx-box2d-platform:1.14.2:natives-desktop"
 
     // GDX Visual Effects
     implementation 'com.crashinvaders.vfx:gdx-vfx-core:0.5.0'
     implementation 'com.crashinvaders.vfx:gdx-vfx-effects:0.5.0'    // Optional, if you need standard filter/effects.
 
-    // Apache Log4J
-    implementation "org.apache.logging.log4j:log4j:$log4j_version"
-    implementation "org.apache.logging.log4j:log4j-core:$log4j_version"
-    implementation "org.apache.logging.log4j:log4j-api:$log4j_version"
-    implementation "org.apache.logging.log4j:log4j-slf4j2-impl:$log4j_version"
-
     // JNA
-    implementation "net.java.dev.jna:jna:$jna_version"
-    implementation "net.java.dev.jna:jna-platform:$jna_version"
+    implementation "net.java.dev.jna:jna:5.13.0"
+    implementation "net.java.dev.jna:jna-platform:5.13.0"
 
     // SLF4J
-    implementation "org.slf4j:slf4j-api:$slf4j_version"
+    implementation "org.slf4j:slf4j-api:2.0.6"
 
     // Google
     implementation "com.google.code.gson:gson:2.10.1"
-    implementation 'com.google.guava:guava:32.0.0-jre'
+    implementation 'com.google.guava:guava:33.7.2-jre'
 
     // Misc
     implementation 'it.unimi.dsi:fastutil:8.5.12'
 
-    implementation "space.earlygrey:shapedrawer:$shapedrawer_version"
+    implementation "space.earlygrey:shapedrawer:2.6.0"
 
     // ImGui
-    implementation "io.github.spair:imgui-java-binding:$imgui_version"
-    implementation "io.github.spair:imgui-java-lwjgl3:$imgui_version", {
+    implementation "io.github.spair:imgui-java-binding:1.89.0"
+    implementation "io.github.spair:imgui-java-lwjgl3:1.89.0", {
         exclude group: 'org.lwjgl', module: 'lwjgl'
         exclude group: 'org.lwjgl', module: 'lwjgl-bom'
         exclude group: 'org.lwjgl', module: 'lwjgl-glfw'
         exclude group: 'org.lwjgl', module: 'lwjgl-opengl'
     }
-    implementation "io.github.spair:imgui-java-natives-linux:$imgui_version"
-    implementation "io.github.spair:imgui-java-natives-macos:$imgui_version"
-    implementation "io.github.spair:imgui-java-natives-windows:$imgui_version"
+    implementation "io.github.spair:imgui-java-natives-linux:1.89.0"
+    implementation "io.github.spair:imgui-java-natives-macos:1.89.0"
+    implementation "io.github.spair:imgui-java-natives-windows:1.89.0"
 
-    implementation "it.unimi.dsi:fastutil-core:$fastutil_version"
-    implementation "com.google.code.findbugs:jsr305:$jsr_version"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:$junit_version"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit_version"
+    implementation "it.unimi.dsi:fastutil-core:8.5.9"
+    implementation "com.google.code.findbugs:jsr305:3.0.2"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.9.0"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.9.0"
 
     implementation "org.xbib.elasticsearch:joptsimple:6.3.2.1"
-    implementation "org.apache.logging.log4j:log4j:$log4j_version"
-    implementation "org.apache.logging.log4j:log4j-core:$log4j_version"
-    implementation "org.apache.logging.log4j:log4j-api:$log4j_version"
 
     // ImGui
-    implementation "io.github.spair:imgui-java-binding:$imgui_version"
-    implementation "io.github.spair:imgui-java-lwjgl3:$imgui_version", {
+    implementation "io.github.spair:imgui-java-binding:1.89.0"
+    implementation "io.github.spair:imgui-java-lwjgl3:1.89.0", {
         exclude group: 'org.lwjgl', module: 'lwjgl'
         exclude group: 'org.lwjgl', module: 'lwjgl-bom'
         exclude group: 'org.lwjgl', module: 'lwjgl-glfw'
         exclude group: 'org.lwjgl', module: 'lwjgl-opengl'
     }
 
-    implementation "io.github.spair:imgui-java-natives-linux:$imgui_version"
-    implementation "io.github.spair:imgui-java-natives-macos:$imgui_version"
-    implementation "io.github.spair:imgui-java-natives-windows:$imgui_version"
+    implementation "io.github.spair:imgui-java-natives-linux:1.89.0"
+    implementation "io.github.spair:imgui-java-natives-macos:1.89.0"
+    implementation "io.github.spair:imgui-java-natives-windows:1.89.0"
 
     // fabric-loader dependencies
-    implementation "org.ow2.asm:asm:${project.asm_version}"
-    implementation "org.ow2.asm:asm-analysis:${project.asm_version}"
-    implementation "org.ow2.asm:asm-commons:${project.asm_version}"
-    implementation "org.ow2.asm:asm-tree:${project.asm_version}"
-    implementation "org.ow2.asm:asm-util:${project.asm_version}"
+    implementation "org.ow2.asm:asm:9.11.1"
+    implementation "org.ow2.asm:asm-analysis:9.11.1"
+    implementation "org.ow2.asm:asm-commons:9.11.1"
+    implementation "org.ow2.asm:asm-tree:9.11.1"
+    implementation "org.ow2.asm:asm-util:9.11.1"
 
-    implementation("net.fabricmc:sponge-mixin:${project.mixin_version}") {
+    implementation("net.fabricmc:sponge-mixin:0.17.5+mixin.0.8.7") {
         exclude module: 'launchwrapper'
         exclude module: 'guava'
         exclude module: 'gson'
@@ -204,7 +181,7 @@ dependencies {
     implementation 'net.fabricmc:dev-launch-injector:0.2.1+build.8'
     implementation 'net.fabricmc:access-widener:2.1.0'
 
-    implementation("net.fabricmc:fabric-loader:$fabric_version")
+    implementation("net.fabricmc:fabric-loader:0.20.1")
 }
 
 processResources {
@@ -248,7 +225,7 @@ jar {
     duplicatesStrategy DuplicatesStrategy.INCLUDE
 }
 
-tasks.create('prepareRun', {
+tasks.register('prepareRun', {
     Files.createDirectories(Paths.get(rootProject.projectDir.getAbsolutePath(), "run"))
 })
 
@@ -265,9 +242,9 @@ tasks.withType(Jar).configureEach {
     duplicatesStrategy DuplicatesStrategy.INCLUDE
 }
 
-task("copyDependencies", type: Copy) {
+tasks.register('copyDependencies', Copy) {
     from(configurations.runtimeClasspath)
-    into("$buildDir/jars")
+    into("${layout.buildDirectory.asFile.get()}/jars")
 }
 
 tasks.register("run", JavaExec) {
@@ -281,9 +258,9 @@ tasks.register("run", JavaExec) {
     }
 }
 
-task("copyJar", type: Copy) {
+tasks.register('copyJar', Copy) {
     from(tasks.jar)
-    into("$buildDir/jars")
+    into("${layout.buildDirectory.asFile.get()}/jars")
 }
 
 compileJava {

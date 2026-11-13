@@ -106,7 +106,7 @@ public class ShortArrayType implements ArrayType<short[], Short> {
 
     @Override
     public String toString() {
-        return writeUso();
+        return this.writeUso();
     }
 
     @Override

@@ -1,7 +1,6 @@
 package dev.ultreon.bubbles.render.gui.widget;
 
 import dev.ultreon.bubbles.render.Renderer;
-import org.checkerframework.common.value.qual.IntRange;
 
 public class Panel extends Container {
     /**
@@ -10,7 +9,7 @@ public class Panel extends Container {
      * @param width  size create the widget
      * @param height size create the widget
      */
-    public Panel(int x, int y, @IntRange(from = 0) int width, @IntRange(from = 0) int height) {
+    public Panel(int x, int y,  int width,  int height) {
         super(x, y, width, height);
     }
 

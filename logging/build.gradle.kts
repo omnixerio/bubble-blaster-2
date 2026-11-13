@@ -23,21 +23,21 @@
  */
 
 plugins {
-  id("java")
+    id("java")
 }
 
 val fabricVersion by properties
 val mixinVersion by properties
 
 dependencies {
-  implementation("org.jetbrains:annotations:15.0")
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-  testImplementation("org.junit.jupiter:junit-jupiter")
-  testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation("org.jetbrains:annotations:20.1.0")
+    testImplementation(platform("org.junit:junit-bom:5.14.1"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-  api("org.slf4j:slf4j-api:2.0.17")
+    api("org.slf4j:slf4j-api:2.0.20")
 }
 
 tasks.test {
-  useJUnitPlatform()
+    useJUnitPlatform()
 }

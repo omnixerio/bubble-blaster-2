@@ -1,21 +1,17 @@
 package dev.ultreon.gameprovider.bubbles;
 
+import dev.ultreon.logging.Logger;
+import dev.ultreon.logging.LoggerManager;
 import net.fabricmc.loader.impl.util.log.LogCategory;
 import net.fabricmc.loader.impl.util.log.LogHandler;
 import net.fabricmc.loader.impl.util.log.LogLevel;
-import org.apache.logging.log4j.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class BB2LogHandler implements LogHandler {
-    private static final Logger LOGGER = LogManager.getLogger("FabricLoader");
-    private final Map<LogCategory, Marker> markerMap = new HashMap<>();
+    private static final Logger LOGGER = LoggerManager.getLogger("FabricLoader");
 
     @Override
     public void log(long time, LogLevel level, LogCategory category, String msg, Throwable exc, boolean fromReplay, boolean wasSuppressed) {
-        var marker = this.markerMap.computeIfAbsent(category, logCategory -> MarkerManager.getMarker(logCategory.name));
-        LOGGER.log(BB2LogHandler.getLevel(level), marker, msg, exc);
+        LOGGER.log(time, BB2LogHandler.getLevel(level), dev.ultreon.logging.LogCategory.DEFAULT, msg, exc, fromReplay, wasSuppressed);
     }
 
     @Override
@@ -23,21 +19,14 @@ public class BB2LogHandler implements LogHandler {
         return LOGGER.isEnabled(BB2LogHandler.getLevel(level));
     }
 
-    private static Level getLevel(LogLevel level) {
-        switch (level) {
-            case INFO:
-                return Level.INFO;
-            case WARN:
-                return Level.WARN;
-            case DEBUG:
-                return Level.DEBUG;
-            case ERROR:
-                return Level.ERROR;
-            case TRACE:
-                return Level.TRACE;
-            default:
-                throw new IllegalArgumentException();
-        }
+    private static dev.ultreon.logging.LogLevel getLevel(LogLevel level) {
+        return switch (level) {
+            case INFO -> dev.ultreon.logging.LogLevel.INFO;
+            case WARN -> dev.ultreon.logging.LogLevel.WARN;
+            case DEBUG -> dev.ultreon.logging.LogLevel.DEBUG;
+            case ERROR -> dev.ultreon.logging.LogLevel.ERROR;
+            case TRACE -> dev.ultreon.logging.LogLevel.TRACE;
+        };
     }
 
     @Override

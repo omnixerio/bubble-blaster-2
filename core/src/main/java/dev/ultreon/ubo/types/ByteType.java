@@ -75,6 +75,6 @@ public class ByteType implements DataType<Byte> {
 
     @Override
     public String toString() {
-        return writeUso();
+        return this.writeUso();
     }
 }

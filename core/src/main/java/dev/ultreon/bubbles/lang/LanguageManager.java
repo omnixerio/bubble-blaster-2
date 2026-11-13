@@ -37,27 +37,27 @@ public class LanguageManager {
     }
 
     public Language load(Locale locale, Identifier id, ResourceManager resourceManager) {
-        Gson gson = new Gson();
-        String newPath = "lang/" + id.path() + ".json";
-        List<byte[]> assets = resourceManager.getAllDataById(id.withPath(newPath));
+        var gson = new Gson();
+        var newPath = "lang/" + id.path() + ".json";
+        var assets = resourceManager.getAllDataById(id.withPath(newPath));
         Map<String, String> languageMap = new HashMap<>();
-        for (byte[] asset : assets) {
-            JsonObject object = gson.fromJson(new StringReader(new String(asset, StandardCharsets.UTF_8)), JsonObject.class);
+        for (var asset : assets) {
+            var object = gson.fromJson(new StringReader(new String(asset, StandardCharsets.UTF_8)), JsonObject.class);
             this.loadFile(languageMap, object);
         }
 
-        Language language = new Language(locale, languageMap, id);
+        var language = new Language(locale, languageMap, id);
         this.languages.put(locale, language);
         REGISTRY.register(id, language);
         return language;
     }
 
     public Language load(Locale locale, Identifier id, Reader reader) {
-        Gson gson = new Gson();
-        String s = "languages/" + id + ".json";
+        var gson = new Gson();
+        var s = "languages/" + id + ".json";
         Map<String, String> languageMap = new HashMap<>();
         this.loadFile(languageMap, gson.fromJson(reader, JsonObject.class));
-        Language language = new Language(locale, languageMap, id);
+        var language = new Language(locale, languageMap, id);
         this.languages.put(locale, language);
         REGISTRY.register(id, language);
         return language;
@@ -90,9 +90,9 @@ public class LanguageManager {
     }
 
     private void loadFile(Map<String, String> languageMap, JsonObject object) {
-        for (Map.Entry<String, JsonElement> entry : object.entrySet()) {
-            JsonElement value = entry.getValue();
-            String key = entry.getKey();
+        for (var entry : object.entrySet()) {
+            var value = entry.getValue();
+            var key = entry.getKey();
             if (value.isJsonPrimitive() && value.getAsJsonPrimitive().isString()) {
                 languageMap.put(key, value.getAsString());
             }

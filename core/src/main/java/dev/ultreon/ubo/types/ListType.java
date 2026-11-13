@@ -45,7 +45,7 @@ public class ListType<T extends DataType<?>> implements DataType<List<T>>, List<
     }
 
     private ListType(List<T> list, int id) {
-        setValue(list);
+        this.setValue(list);
         this.id = id;
         this.componentType = (Class<T>) DataTypeRegistry.getType(id);
     }
@@ -303,7 +303,7 @@ public class ListType<T extends DataType<?>> implements DataType<List<T>>, List<
     }
 
     public <R> List<R> mapTo(Function<T, R> mapper) {
-        return mapTo(mapper, new ArrayList<>());
+        return this.mapTo(mapper, new ArrayList<>());
     }
 
     public <R> List<R> mapTo(Function<T, R> mapper, List<R> list) {
@@ -337,6 +337,6 @@ public class ListType<T extends DataType<?>> implements DataType<List<T>>, List<
 
     @Override
     public String toString() {
-        return writeUso();
+        return this.writeUso();
     }
 }

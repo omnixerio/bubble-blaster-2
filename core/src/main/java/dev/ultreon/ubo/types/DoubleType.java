@@ -71,6 +71,6 @@ public class DoubleType implements DataType<Double> {
 
     @Override
     public String toString() {
-        return writeUso();
+        return this.writeUso();
     }
 }

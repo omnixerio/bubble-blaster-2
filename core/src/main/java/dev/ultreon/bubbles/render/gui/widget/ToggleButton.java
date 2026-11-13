@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Rectangle;
 import dev.ultreon.bubbles.config.Config;
 import dev.ultreon.bubbles.render.gui.GuiStateListener;
 import dev.ultreon.bubbles.text.TextObject;
-import org.checkerframework.common.returnsreceiver.qual.This;
 
 public class ToggleButton extends Button implements GuiStateListener {
     protected TextObject text;
@@ -67,7 +66,7 @@ public class ToggleButton extends Button implements GuiStateListener {
         }
 
         @Override
-        public @This Builder font(BitmapFont font) {
+        public  Builder font(BitmapFont font) {
             this.font = font;
             return this;
         }

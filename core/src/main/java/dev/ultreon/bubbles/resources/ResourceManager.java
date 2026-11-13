@@ -48,7 +48,7 @@ public class ResourceManager {
 
     @Nullable
     public Resource getResource(Identifier entry) {
-        for (ResourcePackage resourcePackage : this.resourcePackages) {
+        for (var resourcePackage : this.resourcePackages) {
             if (resourcePackage.has(entry)) {
                 return resourcePackage.get(entry);
             }
@@ -108,23 +108,23 @@ public class ResourceManager {
             Map<Identifier, Resource> map = new HashMap<>();
 
             // Get assets directory.
-            File assets = new File(file, this.root + "/");
+            var assets = new File(file, this.root + "/");
 
             // Check if assets directory exists.
             if (assets.exists()) {
                 // List files in assets dir.
-                File[] files = assets.listFiles();
+                var files = assets.listFiles();
 
                 // Loop listed files.
-                for (File assetsPackage : files != null ? files : new File[0]) {
+                for (var assetsPackage : files != null ? files : new File[0]) {
                     // Get assets-package namespace from the name create the listed file (that's a dir).
-                    String namespace = assetsPackage.getName();
+                    var namespace = assetsPackage.getName();
 
                     // Walk assets package.
-                    try (Stream<Path> walk = Files.walk(assetsPackage.toPath())) {
-                        for (Path assetPath : walk.collect(Collectors.toList())) {
+                    try (var walk = Files.walk(assetsPackage.toPath())) {
+                        for (var assetPath : walk.collect(Collectors.toList())) {
                             // Convert to file object.
-                            File asset = assetPath.toFile();
+                            var asset = assetPath.toFile();
 
                             // Check if it's a file, if not we will walk to the next file / folder in the Files.walk(...) list.
                             if (!asset.isFile()) {
@@ -133,7 +133,7 @@ public class ResourceManager {
 
                             // Create resource with file input stream.
                             ThrowingSupplier<InputStream, IOException> sup = () -> Files.newInputStream(asset.toPath());
-                            Resource resource = new Resource(sup);
+                            var resource = new Resource(sup);
 
                             // Continue to next file / folder if asset path is the same path as the assets package.
                             if (assetPath.toFile().equals(assetsPackage)) {
@@ -141,8 +141,8 @@ public class ResourceManager {
                             }
 
                             // Calculate resource path.
-                            Path relative = assetsPackage.toPath().relativize(assetPath);
-                            String s = relative.toString().replaceAll("\\\\", "/");
+                            var relative = assetsPackage.toPath().relativize(assetPath);
+                            var s = relative.toString().replaceAll("\\\\", "/");
 
                             // Create resource entry/
                             Identifier entry;
@@ -177,8 +177,8 @@ public class ResourceManager {
             ZipEntry entry;
             while ((entry = file.getNextEntry()) != null) {
                 // Get name create the jar entry.
-                String name = entry.getName();
-                byte[] bytes = IOUtils.readAllBytes(file);
+                var name = entry.getName();
+                var bytes = IOUtils.readAllBytes(file);
                 ThrowingSupplier<InputStream, IOException> sup = () -> new ByteArrayInputStream(bytes);
 
                 // Check if it isn't a directory, because we want a file.
@@ -197,20 +197,20 @@ public class ResourceManager {
     }
 
     private void addEntry(Map<Identifier, Resource> map, String name, ThrowingSupplier<InputStream, IOException> sup) {
-        String[] splitPath = name.split("/", 3);
+        var splitPath = name.split("/", 3);
 
         if (splitPath.length >= 3) {
             if (name.startsWith(this.root + "/")) {
                 // Get namespace and path from split path
-                String namespace = splitPath[1];
-                String path = splitPath[2];
+                var namespace = splitPath[1];
+                var path = splitPath[2];
 
                 // Resource
-                Resource resource = new Resource(sup);
+                var resource = new Resource(sup);
 
                 try {
                     // Entry
-                    Identifier entry = new Identifier(namespace, path);
+                    var entry = new Identifier(namespace, path);
 
                     // Add (entry -> resource) mapping.
                     map.put(entry, resource);
@@ -224,11 +224,11 @@ public class ResourceManager {
     @NotNull
     public List<byte[]> getAllDataByPath(@NotNull String path) {
         List<byte[]> data = new ArrayList<>();
-        for (ResourcePackage resourcePackage : this.resourcePackages) {
-            Map<Identifier, Resource> identifierResourceMap = resourcePackage.mapEntries();
-            for (Map.Entry<Identifier, Resource> entry : identifierResourceMap.entrySet()) {
+        for (var resourcePackage : this.resourcePackages) {
+            var identifierResourceMap = resourcePackage.mapEntries();
+            for (var entry : identifierResourceMap.entrySet()) {
                 if (entry.getKey().path().equals(path)) {
-                    byte[] bytes = entry.getValue().loadOrGet();
+                    var bytes = entry.getValue().loadOrGet();
                     if (bytes == null) continue;
 
                     data.add(entry.getValue().getData());
@@ -242,11 +242,11 @@ public class ResourceManager {
     @NotNull
     public List<byte[]> getAllDataById(@NotNull Identifier id) {
         List<byte[]> data = new ArrayList<>();
-        for (ResourcePackage resourcePackage : this.resourcePackages) {
+        for (var resourcePackage : this.resourcePackages) {
             if (resourcePackage.has(id)) {
-                Resource resource = resourcePackage.get(id);
+                var resource = resourcePackage.get(id);
                 if (resource == null) continue;
-                byte[] bytes = resource.loadOrGet();
+                var bytes = resource.loadOrGet();
                 if (bytes == null) continue;
 
                 data.add(resource.getData());

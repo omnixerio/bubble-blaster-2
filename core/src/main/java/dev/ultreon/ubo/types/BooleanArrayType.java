@@ -136,7 +136,7 @@ public class BooleanArrayType implements ArrayType<boolean[], Boolean> {
 
     @Override
     public String toString() {
-        return writeUso();
+        return this.writeUso();
     }
 
     @Override

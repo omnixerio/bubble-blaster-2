@@ -20,7 +20,7 @@ public class Resource {
     }
 
     public void load() {
-        try (InputStream inputStream = this.opener.get()) {
+        try (var inputStream = this.opener.get()) {
             this.data = IOUtils.readAllBytes(inputStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -40,7 +40,7 @@ public class Resource {
     }
 
     protected Image loadImage() {
-        try (InputStream inputStream = this.opener.get()) {
+        try (var inputStream = this.opener.get()) {
             return ImageIO.read(inputStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -56,7 +56,7 @@ public class Resource {
     }
 
     public Font loadFont() throws FontFormatException {
-        try (InputStream inputStream = this.opener.get()) {
+        try (var inputStream = this.opener.get()) {
             return Font.createFont(Font.TRUETYPE_FONT, inputStream);
         } catch (IOException e) {
             throw new RuntimeException(e);

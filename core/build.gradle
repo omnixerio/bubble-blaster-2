@@ -79,48 +79,47 @@ repositories {
     }
 }
 
-/***************
+/**
  * Dependencies
  */
 dependencies {
-    api "it.unimi.dsi:fastutil:$fastutil_version"
-    api "org.checkerframework:checker:$checker_framework_version"
+    api "it.unimi.dsi:fastutil:8.5.19"
 
-    api "org.jetbrains:annotations:$jetbrains_annotations_version"
+    api "org.jetbrains:annotations:26.1.0"
 
     api project(":logging")
 
     // Test dependencies
-    testImplementation "org.junit.jupiter:junit-jupiter-api:$junit_version"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit_version"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.9.0"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.9.0"
 
     // Misc
-    api "org.jetbrains:annotations:$jetbrains_annotations_version"
-    api "com.electronwill.night-config:toml_android:$nightconfig_version"
+    api "org.jetbrains:annotations:23.0.0"
+    api "com.electronwill.night-config:toml_android:3.6.6"
 
     // CoreLibs
-    api "dev.ultreon.corelibs:collections-v0:$corelibs_version"
-    api "dev.ultreon.corelibs:commons-v0:$corelibs_version"
-    api "dev.ultreon.corelibs:crash-v0:$corelibs_version"
-    api "dev.ultreon.corelibs:datetime-v0:$corelibs_version"
-    api "dev.ultreon.corelibs:events-v1:$corelibs_version"
-    api "dev.ultreon.corelibs:functions-v0:$corelibs_version"
-    api "dev.ultreon.corelibs:registries-v0:$corelibs_version"
-    api "dev.ultreon.corelibs:resources-v0:$corelibs_version"
-    api "dev.ultreon.corelibs:text-v0:$corelibs_version"
-    api "dev.ultreon.corelibs:translations-v0:$corelibs_version"
-    api "dev.ultreon.corelibs:translations-v1:$corelibs_version"
+    api "dev.ultreon.corelibs:collections-v0:0.3.0"
+    api "dev.ultreon.corelibs:commons-v0:0.3.0"
+    api "dev.ultreon.corelibs:crash-v0:0.3.0"
+    api "dev.ultreon.corelibs:datetime-v0:0.3.0"
+    api "dev.ultreon.corelibs:events-v1:0.3.0"
+    api "dev.ultreon.corelibs:functions-v0:0.3.0"
+    api "dev.ultreon.corelibs:registries-v0:0.3.0"
+    api "dev.ultreon.corelibs:resources-v0:0.3.0"
+    api "dev.ultreon.corelibs:text-v0:0.3.0"
+    api "dev.ultreon.corelibs:translations-v0:0.3.0"
+    api "dev.ultreon.corelibs:translations-v1:0.3.0"
 
     // Apis
-    api "com.google.code.gson:gson:$gson_version"
-    api "commons-io:commons-io:$commons_io_version"
-    api "commons-net:commons-net:$commons_net_version"
-    api "org.apache.commons:commons-lang3:$commons_lang_version"
-    api "org.apache.commons:commons-lang3:$commons_lang_version"
-    api "org.apache.commons:commons-collections4:$commons_collections_version"
-    api "org.apache.commons:commons-text:$commons_text_version"
-    api "org.apache.commons:commons-math3:$commons_math_version"
-    api "org.apache.ant:ant:$ant_version"
+    api "com.google.code.gson:gson:2.10.1!!"
+    api "commons-io:commons-io:2.14.0"
+    api "commons-net:commons-net:3.9.0"
+    api "org.apache.commons:commons-lang3:3.18.0"
+    api "org.apache.commons:commons-lang3:3.18.0"
+    api "org.apache.commons:commons-collections4:4.4"
+    api "org.apache.commons:commons-text:1.10.0"
+    api "org.apache.commons:commons-math3:3.6.1"
+    api "org.apache.ant:ant:1.10.18"
 
     api "com.badlogicgames.box2dlights:box2dlights:1.5"
 
@@ -128,25 +127,25 @@ dependencies {
     api fileTree(dir: "$projectDir/libs", include: ["*.jar"])
 
     // Google
-    api "com.google.code.findbugs:jsr305:$jsr_version"
-    api "com.google.guava:guava:$guava_version"
-    api "com.google.code.gson:gson:$gson_version"
+    api "com.google.code.findbugs:jsr305:3.0.2"
+    api "com.google.guava:guava:33.7.2-jre"
+    api "com.google.code.gson:gson:2.10.1!!"
 
     // SLF4J
-    api "org.slf4j:slf4j-api:$slf4j_version"
+    api "org.slf4j:slf4j-api:2.0.6"
 
     // OSHi (For system info in crash reports)
-    api "com.github.oshi:oshi-core:$oshi_version"
+    api "com.github.oshi:oshi-core:6.3.2"
 
     // LibGDX
-    api "com.badlogicgames.gdx:gdx:$gdx_version"
-    api "com.badlogicgames.gdx:gdx-box2d:$gdx_version"
-    api "com.badlogicgames.ashley:ashley:$ashley_version"
-    api "com.badlogicgames.gdx:gdx-ai:$ai_version"
-    api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdx_controllers_version"
-    api "com.badlogicgames.gdx:gdx-freetype:$gdx_version"
-    api "com.badlogicgames.box2dlights:box2dlights:$box_2d_lights_version"
-    api "space.earlygrey:shapedrawer:$shapedrawer_version"
+    api "com.badlogicgames.gdx:gdx:1.14.2"
+    api "com.badlogicgames.gdx:gdx-box2d:1.14.2"
+    api "com.badlogicgames.ashley:ashley:1.7.4"
+    api "com.badlogicgames.gdx:gdx-ai:1.8.2"
+    api "com.badlogicgames.gdx-controllers:gdx-controllers-core:2.2.3"
+    api "com.badlogicgames.gdx:gdx-freetype:1.14.2"
+    api "com.badlogicgames.box2dlights:box2dlights:1.5"
+    api "space.earlygrey:shapedrawer:2.6.0"
 
     // GDX Visual Effects
     api 'com.crashinvaders.vfx:gdx-vfx-core:0.5.0'
@@ -267,12 +266,12 @@ tasks.withType(JavaCompile).configureEach {
 
 task("copyDependencies", type: Copy) {
     from(configurations.runtimeClasspath)
-    into("$buildDir/jars")
+    into("${layout.buildDirectory.asFile.get()}/jars")
 }
 
 task("copyJar", type: Copy) {
     from(tasks.jar)
-    into("$buildDir/jars")
+    into("${layout.buildDirectory.asFile.get()}/jars")
 }
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))

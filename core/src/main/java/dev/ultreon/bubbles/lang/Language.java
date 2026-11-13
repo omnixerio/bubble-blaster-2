@@ -17,9 +17,9 @@ public class Language {
     }
 
     public String get(String path, Object... args) {
-        String[] split = path.split("/");
+        var split = path.split("/");
 
-        String s = this.languageMap.get(path);
+        var s = this.languageMap.get(path);
         return s == null ? null : String.format(s, args);
     }
 
@@ -32,18 +32,18 @@ public class Language {
     }
 
     public static String translate(String path, Object... args) {
-        Language language = LanguageManager.INSTANCE.get(LanguageManager.getCurrentLanguage());
+        var language = LanguageManager.INSTANCE.get(LanguageManager.getCurrentLanguage());
         if (language == null) return translateFallback(path, args);
-        String s = language.get(path, args);
+        var s = language.get(path, args);
         return s == null ? translateFallback(path, args) : s;
     }
 
     private static String translateFallback(String path, Object[] args) {
-        Language english = LanguageManager.INSTANCE.get(new Locale("en", "us"));
+        var english = LanguageManager.INSTANCE.get(new Locale("en", "us"));
         if (english == null) {
             throw new IllegalStateException("English language not loaded");
         }
-        String s = english.get(path, args);
+        var s = english.get(path, args);
         return s == null ? path : s;
     }
 }

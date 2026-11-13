@@ -33,6 +33,7 @@ public class ModernHud extends HudType {
 
     // Colors
     private static final Color LEVEL_UP_COLOR = Colors.argb(0x90ffffff);
+    public static final Color WHITE = Colors.argb(0x40ffffff);
     private boolean showLevelUp;
     private long hideLevelUpTime;
     private int level;
@@ -52,16 +53,21 @@ public class ModernHud extends HudType {
 
         if (player == null) return;
 
-        if (!world.isGameOver()) {
-            var blurredFrame = renderer.captureBlurredFrame();
-            this.game.profiler.section("Draw Badge", () -> this.drawBadge(renderer, player, blurredFrame));
-            this.game.profiler.section("Draw Status Effects", () -> this.drawStatusEffects(renderer, player));
-        }
+        var blurredFrame = renderer.captureBlurredFrame();
+        try {
+            if (!world.isGameOver()) {
+                this.game.profiler.section("Draw Badge", () -> this.drawBadge(renderer, player, blurredFrame));
+                this.game.profiler.section("Draw Status Effects", () -> this.drawStatusEffects(renderer, player, blurredFrame));
+                this.game.profiler.section("Draw Hotbar", () -> this.drawHotbar(renderer, player, blurredFrame));
+            }
 
-        this.game.profiler.section("Draw Messages", () -> this.drawMessages(renderer));
-        this.game.profiler.section("Draw Level Up Message", () -> this.drawLevelUpMessage(renderer, gamemode));
-        if (GamePlatform.get().isMobile()) {
-            this.game.profiler.section("Draw Mobile Overlay", () -> this.drawMobileOverlay(renderer));
+            this.game.profiler.section("Draw Messages", () -> this.drawMessages(renderer));
+            this.game.profiler.section("Draw Level Up Message", () -> this.drawLevelUpMessage(renderer, gamemode));
+            if (GamePlatform.get().isMobile()) {
+                this.game.profiler.section("Draw Mobile Overlay", () -> this.drawMobileOverlay(renderer));
+            }
+        } finally {
+            blurredFrame.dispose();
         }
     }
 
@@ -77,12 +83,20 @@ public class ModernHud extends HudType {
         this.game.profiler.section("Draw Player Details", () -> this.drawPlayerDetails(renderer, player));
     }
 
+    private void drawHotbar(Renderer renderer, Player player, FrameBuffer blurredFrame) {
+        renderer.drawBlurredFrameRegion(blurredFrame.getColorBufferTexture(), this.width() / 2 - 20 - 40 - 40, 20, 40 * 5, 40);
+        renderer.fill(this.width() / 2 - 20 - 40 - 40, 20, 40 * 5, 40, Colors.rgba(0x00, 0x00, 0x00, 0x80));
+        renderer.box(this.width() / 2 - 20 - 40 - 40 + 2, 22, 36, 36, WHITE);
+        renderer.box(this.width() / 2 - 20 - 40 + 2, 22, 36, 36, WHITE);
+        renderer.box(this.width() / 2 - 20 + 2, 22, 36, 36, WHITE);
+        renderer.box(this.width() / 2 + 20 + 2, 22, 36, 36, WHITE);
+        renderer.box(this.width() / 2 + 20 + 40 + 2, 22, 36, 36, WHITE);
+
+        player.hotbar.render(renderer);
+    }
+
     private void drawBadgeBackground(Renderer renderer, FrameBuffer blurredFrame) {
-        try {
-            renderer.drawBlurredFrameRegion(blurredFrame.getColorBufferTexture(), 20, 20, 300, 80);
-        } finally {
-            blurredFrame.dispose();
-        }
+        renderer.drawBlurredFrameRegion(blurredFrame.getColorBufferTexture(), 20, 20, 300, 80);
         renderer.fill(20, 20, 300, 80, Colors.rgba(0x00, 0x00, 0x00, 0x80));
     }
 
@@ -170,11 +184,12 @@ public class ModernHud extends HudType {
      * @param player   the player, to get the information about the status effects from.
      */
     @SuppressWarnings("GDXJavaFlushInsideLoop")
-    private void drawStatusEffects(@NotNull Renderer renderer, @NotNull Player player) {
+    private void drawStatusEffects(@NotNull Renderer renderer, @NotNull Player player, FrameBuffer blurredFrame) {
         var x = this.game.getWidth() - 320;
         var y = 20;
 
         for (var effectInstance : player.getActiveEffects()) {
+            renderer.drawBlurredFrameRegion(blurredFrame.getColorBufferTexture(), x, y, 300, 50);
             renderer.fill(x, y, 300, 50, Colors.rgba(0x00, 0x00, 0x00, 0x80));
 
             // Format duration to string.

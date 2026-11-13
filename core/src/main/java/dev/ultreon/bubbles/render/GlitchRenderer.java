@@ -23,7 +23,7 @@ public class GlitchRenderer {
             this.charW = 1;
         else this.charW = a.width + 4;
         this.charH = (int) this.font.getData().lineHeight;
-        if (charH <= 0)
+        if (this.charH <= 0)
             this.charH = 1;
         this.matrixW = game.getWidth() / this.charW;
         this.matrixH = game.getHeight() / this.charH;

@@ -68,6 +68,6 @@ public class UUIDType implements DataType<UUID> {
 
     @Override
     public String toString() {
-        return writeUso();
+        return this.writeUso();
     }
 }

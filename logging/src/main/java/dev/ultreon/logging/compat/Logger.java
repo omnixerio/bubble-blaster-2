@@ -22,7 +22,11 @@
  * THE SOFTWARE.
  */
 
-package net.quantumvoxel.logging;
+package dev.ultreon.logging.compat;
+
+import dev.ultreon.logging.LogCategory;
+import dev.ultreon.logging.LogLevel;
+import dev.ultreon.logging.LoggerManager;
 
 import java.io.PrintStream;
 import java.time.Instant;
@@ -32,7 +36,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static net.quantumvoxel.logging.AnsiColors.*;
+import static dev.ultreon.logging.AnsiColors.*;
 
 public class Logger {
     private static final DateTimeFormatter FORMAT = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -56,16 +60,13 @@ public class Logger {
      * @param wasSuppressed Flag indicating if the log was suppressed
      */
     public void log(long time, LogLevel level, LogCategory category, String msg, Throwable exc, boolean fromReplay, boolean wasSuppressed) {
-        if (this.name.startsWith("io.netty.handler.codec.http.websocketx."))
-            return;
-
-        if (!isEnabled(level)) return;
+        if (!this.isEnabled(level)) return;
         if (msg == null) {
-            doLog(time, level, category, null, exc, fromReplay, wasSuppressed);
+            this.doLog(time, level, category, null, exc, fromReplay, wasSuppressed);
             return;
         }
         for (var line : msg.split("\r\n|\r|\n")) {
-            doLog(time, level, category, line, exc, fromReplay, wasSuppressed);
+            this.doLog(time, level, category, line, exc, fromReplay, wasSuppressed);
             exc = null; //? Prevent exception log spam
         }
     }
@@ -74,7 +75,7 @@ public class Logger {
         var sb = new StringBuilder();
         var format = LocalDateTime.ofInstant(Instant.ofEpochMilli(time), ZoneId.systemDefault()).format(FORMAT);
         sb.append(BLUE).append(format).append(" ");
-        sb.append(colorFor(level)).append("[").append(Thread.currentThread().getName()).append("/").append(level).append("] ");
+        sb.append(this.colorFor(level)).append("[").append(Thread.currentThread().getName()).append("/").append(level).append("] ");
         sb.append(CYAN).append("(").append(this.name);
         if (category != null && category != LogCategory.DEFAULT) {
             sb.append("/").append(category.getName());
@@ -90,7 +91,7 @@ public class Logger {
         }
         sb.append(RESET + "\n");
         if (exc == null) {
-            outFor(level).print(sb);
+            this.outFor(level).print(sb);
             return;
         }
         sb.append(BLUE).append(exc.getClass().getName()).append(": ").append(RESET).append(exc.getMessage()).append("\n");
@@ -98,7 +99,7 @@ public class Logger {
 
         sb.append("\n");
 
-        outFor(level).print(sb);
+        this.outFor(level).print(sb);
     }
 
     private PrintStream outFor(LogLevel level) {
@@ -114,7 +115,24 @@ public class Logger {
     private static void stack(Throwable exc, StackTraceElement[] lastStack, StringBuilder sb) {
         var stElems = removeLast(exc.getStackTrace(), lastStack);
         for (var ste : stElems) {
-            sb.append("    at ").append(CYAN).append(ste.getClassName().replace("$", GREEN + "$").replace(".", CYAN + ".")).append(RESET);
+            sb.append("    at ");
+            var classLoaderName = ste.getClassLoaderName();
+            if (classLoaderName != null) {
+                sb.append(PURPLE).append(classLoaderName).append(RESET).append("/");
+            }
+            var moduleName = ste.getModuleName();
+            if (moduleName != null) {
+                var moduleVersion = ste.getModuleVersion();
+                sb.append(GREEN).append(moduleName);
+                if (moduleVersion != null) {
+                    sb.append(RESET).append("@").append(GREEN).append(moduleVersion);
+                }
+                if (sb.length() > 0) {
+                    sb.append(RESET).append('/');
+                }
+            }
+
+            sb.append(CYAN).append(ste.getClassName().replace("$", GREEN + "$").replace(".", CYAN + ".")).append(RESET);
             var methodName = ste.getMethodName();
             if (methodName.equals("<init>") || methodName.equals("<clinit>")) {
                 sb.append(".").append(RED).append(methodName);
@@ -192,27 +210,27 @@ public class Logger {
     }
 
     public void info(LogCategory category, String msg) {
-        log(System.currentTimeMillis(), LogLevel.INFO, category, msg, null, false, false);
+        this.log(System.currentTimeMillis(), LogLevel.INFO, category, msg, null, false, false);
     }
 
     public void trace(LogCategory category, String msg) {
-        log(System.currentTimeMillis(), LogLevel.TRACE, category, msg, null, false, false);
+        this.log(System.currentTimeMillis(), LogLevel.TRACE, category, msg, null, false, false);
     }
 
     public void debug(LogCategory category, String msg) {
-        log(System.currentTimeMillis(), LogLevel.DEBUG, category, msg, null, false, false);
+        this.log(System.currentTimeMillis(), LogLevel.DEBUG, category, msg, null, false, false);
     }
 
     public void warn(LogCategory category, String msg) {
-        log(System.currentTimeMillis(), LogLevel.WARN, category, msg, null, false, false);
+        this.log(System.currentTimeMillis(), LogLevel.WARN, category, msg, null, false, false);
     }
 
     public void error(LogCategory category, String msg) {
-        log(System.currentTimeMillis(), LogLevel.ERROR, category, msg, null, false, false);
+        this.log(System.currentTimeMillis(), LogLevel.ERROR, category, msg, null, false, false);
     }
 
     public void trace(String msg) {
-        log(System.currentTimeMillis(), LogLevel.TRACE, LogCategory.DEFAULT, msg, null, false, false);
+        this.log(System.currentTimeMillis(), LogLevel.TRACE, LogCategory.DEFAULT, msg, null, false, false);
     }
 
     public boolean isEnabled(LogLevel logLevel) {

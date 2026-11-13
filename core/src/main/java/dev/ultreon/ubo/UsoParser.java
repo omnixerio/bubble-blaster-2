@@ -18,28 +18,28 @@ public class UsoParser {
     }
 
     private DataType<?> readUso() throws IOException {
-        var read = read();
+        var read = this.read();
         switch (read) {
             case '[':
-                return readList();
+                return this.readList();
             case '{':
-                return readMap();
+                return this.readMap();
             case '(':
-                return readArray();
+                return this.readArray();
             case '<':
-                return readUUID();
+                return this.readUUID();
             case '"':
-                return readString();
+                return this.readString();
             case '\'':
-                return new CharType(readChar());
+                return new CharType(this.readChar());
             case 'x':
-                return readBitSet();
+                return this.readBitSet();
             case 't':
             case 'f':
                 this.unread();
-                return readBoolean();
+                return this.readBoolean();
             default:
-                if (Character.isDigit(read)) return readNumber(read);
+                if (Character.isDigit(read)) return this.readNumber(read);
                 throw new IOException("Invalid USO: " + (char) read);
         }
     }
@@ -47,13 +47,13 @@ public class UsoParser {
     private DataType<?> readBoolean() throws IOException {
         var builder = new StringBuilder();
         while (true) {
-            var r = read();
+            var r = this.read();
             if (r == -1) break;
             if (!Character.isAlphabetic(r)) break;
             builder.append((char) r);
         }
 
-        unread();
+        this.unread();
 
         var string = builder.toString();
         if (string.equalsIgnoreCase("true")) return new BooleanType(true);
@@ -62,32 +62,32 @@ public class UsoParser {
     }
 
     private DataType<?> readArray() throws IOException {
-        var read = read();
+        var read = this.read();
         switch ((char) read) {
             case 'b':
-                if (read() != ';') throw new IOException("Invalid array: expected ';'");
-                return readByteArray();
+                if (this.read() != ';') throw new IOException("Invalid array: expected ';'");
+                return this.readByteArray();
             case 's':
-                if (read() != ';') throw new IOException("Invalid array: expected ';'");
-                return readShortArray();
+                if (this.read() != ';') throw new IOException("Invalid array: expected ';'");
+                return this.readShortArray();
             case 'i':
-                if (read() != ';') throw new IOException("Invalid array: expected ';'");
-                return readIntArray();
+                if (this.read() != ';') throw new IOException("Invalid array: expected ';'");
+                return this.readIntArray();
             case 'l':
-                if (read() != ';') throw new IOException("Invalid array: expected ';'");
-                return readLongArray();
+                if (this.read() != ';') throw new IOException("Invalid array: expected ';'");
+                return this.readLongArray();
             case 'f':
-                if (read() != ';') throw new IOException("Invalid array: expected ';'");
-                return readFloatArray();
+                if (this.read() != ';') throw new IOException("Invalid array: expected ';'");
+                return this.readFloatArray();
             case 'd':
-                if (read() != ';') throw new IOException("Invalid array: expected ';'");
-                return readDoubleArray();
+                if (this.read() != ';') throw new IOException("Invalid array: expected ';'");
+                return this.readDoubleArray();
             case 'B':
-                if (read() != ';') throw new IOException("Invalid array: expected ';'");
-                return readBitSet();
+                if (this.read() != ';') throw new IOException("Invalid array: expected ';'");
+                return this.readBitSet();
             case 'c':
-                if (read() != ';') throw new IOException("Invalid array: expected ';'");
-                return readCharArray();
+                if (this.read() != ';') throw new IOException("Invalid array: expected ';'");
+                return this.readCharArray();
             default:
                 throw new IOException("Invalid array");
         }
@@ -97,7 +97,7 @@ public class UsoParser {
         var chars = new char[0];
         while (true) {
             int r;
-            if ((r = read()) == -1) {
+            if ((r = this.read()) == -1) {
                 throw new EOFException("Invalid character: EOF");
             }
 
@@ -105,11 +105,11 @@ public class UsoParser {
                 throw new IOException("Invalid character: expected ' but got " + (char) r);
             }
 
-            var c = readChar();
+            var c = this.readChar();
 
-            r = read();
+            r = this.read();
 
-            chars = add(chars, c);
+            chars = this.add(chars, c);
 
             if (r == ',') continue;
             if (r == ')') break;
@@ -126,7 +126,7 @@ public class UsoParser {
             int r;
             var first = true;
             while (true) {
-                r = read();
+                r = this.read();
                 if (first && r == '-') {
                     builder.append((char) r);
                     first = false;
@@ -143,7 +143,7 @@ public class UsoParser {
 
 
             var number = Byte.parseByte(builder.toString());
-            bytes = add(bytes, number);
+            bytes = this.add(bytes, number);
 
             if (r == ',') continue;
             if (r == ')') break;
@@ -160,7 +160,7 @@ public class UsoParser {
             int r;
             var first = true;
             while (true) {
-                r = read();
+                r = this.read();
                 if (first && r == '-') {
                     builder.append((char) r);
                     first = false;
@@ -175,7 +175,7 @@ public class UsoParser {
             }
 
             var number = Short.parseShort(builder.toString());
-            shorts = add(shorts, number);
+            shorts = this.add(shorts, number);
 
             if (r == ',') continue;
             if (r == ')') break;
@@ -192,7 +192,7 @@ public class UsoParser {
             int r;
             var first = true;
             while (true) {
-                r = read();
+                r = this.read();
                 if (first && r == '-') {
                     builder.append((char) r);
                     first = false;
@@ -207,7 +207,7 @@ public class UsoParser {
             }
 
             var number = Integer.parseInt(builder.toString());
-            ints = add(ints, number);
+            ints = this.add(ints, number);
 
             if (r == ',') continue;
             if (r == ')') break;
@@ -224,7 +224,7 @@ public class UsoParser {
             int r;
             var first = true;
             while (true) {
-                r = read();
+                r = this.read();
                 if (first && r == '-') {
                     builder.append((char) r);
                     first = false;
@@ -239,7 +239,7 @@ public class UsoParser {
             }
 
             var number = Long.parseLong(builder.toString());
-            longs = add(longs, number);
+            longs = this.add(longs, number);
 
             if (r == ',') continue;
             if (r == ')') break;
@@ -256,7 +256,7 @@ public class UsoParser {
             int r;
             var first = true;
             while (true) {
-                r = read();
+                r = this.read();
                 if (first && r == '-') {
                     builder.append((char) r);
                     first = false;
@@ -271,7 +271,7 @@ public class UsoParser {
             }
 
             var number = Float.parseFloat(builder.toString());
-            floats = add(floats, number);
+            floats = this.add(floats, number);
 
             if (r == ',') continue;
             if (r == ')') break;
@@ -288,7 +288,7 @@ public class UsoParser {
             int r;
             var first = true;
             while (true) {
-                r = read();
+                r = this.read();
                 if (first && r == '-') {
                     builder.append((char) r);
                     first = false;
@@ -303,7 +303,7 @@ public class UsoParser {
             }
 
             var number = Double.parseDouble(builder.toString());
-            doubles = add(doubles, number);
+            doubles = this.add(doubles, number);
 
             if (r == ',') continue;
             if (r == ')') break;
@@ -314,9 +314,9 @@ public class UsoParser {
     }
 
     private char readChar() throws IOException {
-        var read = read();
+        var read = this.read();
         if (read == '\\') {
-            read = read();
+            read = this.read();
             if (read == 't') {
                 read = '\t';
             } else if (read == 'n') {
@@ -330,16 +330,16 @@ public class UsoParser {
             } else if (read == '0') {
                 read = '\0';
             } else if (read == 'u') {
-                read = read();
-                read = (read << 4) + read();
-                read = (read << 4) + read();
-                read = (read << 4) + read();
+                read = this.read();
+                read = (read << 4) + this.read();
+                read = (read << 4) + this.read();
+                read = (read << 4) + this.read();
             }
         } else if (read == -1) {
             throw new EOFException("Invalid char: reached end of stream");
         }
 
-        if (read() != '\'') throw new IOException("Invalid char: expected ' but got " + (char) read);
+        if (this.read() != '\'') throw new IOException("Invalid char: expected ' but got " + (char) read);
         return (char) read;
     }
 
@@ -398,7 +398,7 @@ public class UsoParser {
 
         loop:
         while (true) {
-            var read = read();
+            var read = this.read();
             switch (read) {
                 case '0':
                     set.clear(i);
@@ -423,7 +423,7 @@ public class UsoParser {
         var builder = new StringBuilder();
         builder.append((char) read);
         while (true) {
-            read = read();
+            read = this.read();
             if (!Character.isDigit(read) && read != '.') break;
             builder.append((char) read);
         }
@@ -455,13 +455,13 @@ public class UsoParser {
     }
 
     private DataType<?> readList() throws IOException {
-        var dataType = readUso();
+        var dataType = this.readUso();
         if (dataType == null) {
             throw new IOException("Invalid list: expected at least one element");
         }
 
         var id = dataType.id();
-        var read = read();
+        var read = this.read();
         if (read == ']') {
             var list = new ListType<DataType<?>>(id);
             list.add(dataType);
@@ -470,12 +470,12 @@ public class UsoParser {
             throw new IOException("Invalid list: expected ',' or ']'");
         }
 
-        readWhitespace();
+        this.readWhitespace();
 
         var list = new ListType<DataType<?>>(id);
         list.add(dataType);
         while (true) {
-            var cur = readUso();
+            var cur = this.readUso();
             if (cur == null) {
                 throw new IOException("Invalid list: invalid element at index " + list.size());
             }
@@ -486,15 +486,15 @@ public class UsoParser {
 
             list.add(cur);
 
-            readWhitespace();
-            read = read();
+            this.readWhitespace();
+            read = this.read();
             if (read == ',') {
-                readWhitespace();
-                read = read();
+                this.readWhitespace();
+                read = this.read();
                 if (read == ']') {
                     return list;
                 } else {
-                    unread();
+                    this.unread();
                 }
             } else if (read == ']') {
                 return list;
@@ -506,26 +506,26 @@ public class UsoParser {
 
     private DataType<?> readMap() throws IOException {
         var map = new MapType();
-        var read = read();
+        var read = this.read();
         while (read != '}') {
             if (read != '"') throw new IOException("Invalid map: expected '\"' but got " + (char) read);
-            var key = readString();
+            var key = this.readString();
 
-            readWhitespace();
-            if (read() != ':') throw new IOException("Invalid map: expected ':' but got " + (char) read);
-            read();
-            readWhitespace();
-            var value = readUso();
+            this.readWhitespace();
+            if (this.read() != ':') throw new IOException("Invalid map: expected ':' but got " + (char) read);
+            this.read();
+            this.readWhitespace();
+            var value = this.readUso();
 
             map.put(key.getValue(), value);
 
-            readWhitespace();
-            read = read();
+            this.readWhitespace();
+            read = this.read();
             if (read == ',') {
-                readWhitespace();
-                read = read();
+                this.readWhitespace();
+                read = this.read();
                 if (read == '}') {
-                    read();
+                    this.read();
                     break;
                 }
             } else if (read == '}') {
@@ -540,11 +540,11 @@ public class UsoParser {
 
     private StringType readString() {
         var builder = new StringBuilder();
-        var read = read();
+        var read = this.read();
         while (read != '"') {
             builder.append((char) read);
             if (read == '\\') {
-                read = read();
+                read = this.read();
                 if (read == 'n') {
                     builder.append('\n');
                 } else if (read == 'r') {
@@ -558,24 +558,24 @@ public class UsoParser {
                 } else if (read == '0') {
                     builder.append('\0');
                 } else if (read == 'u') {
-                    builder.append((char) (read() << 12
-                            | read() << 8
-                            | read() << 4
-                            | read()));
+                    builder.append((char) (this.read() << 12
+                            | this.read() << 8
+                            | this.read() << 4
+                            | this.read()));
                 } else {
                     builder.append((char) read);
                 }
             }
-            read = read();
+            read = this.read();
         }
         return new StringType(builder.toString());
     }
 
     private void readWhitespace() {
         while (true) {
-            var read = read();
+            var read = this.read();
             if (!Character.isWhitespace(read)) {
-                unread();
+                this.unread();
                 return;
             }
         }
@@ -584,7 +584,7 @@ public class UsoParser {
     private UUIDType readUUID() throws IOException {
         var builder = new StringBuilder();
         while (true) {
-            var read = read();
+            var read = this.read();
             if (read == '>') break;
 
             if (read == -1) throw new EOFException("Invalid UUID: EOF");
@@ -619,7 +619,7 @@ public class UsoParser {
 
     public DataType<?> parse() throws IOException {
         try {
-            return readUso();
+            return this.readUso();
         } catch (Exception e) {
             throw new IOException("Unable to parse USO at pos " + this.pos + ": " + e.getMessage(), e);
         }

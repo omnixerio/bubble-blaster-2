@@ -70,7 +70,7 @@ public class StringType implements DataType<String>, CharSequence {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || this.getClass() != o.getClass()) return false;
         var that = (StringType) o;
         return this.obj.equals(that.obj);
     }
@@ -108,6 +108,6 @@ public class StringType implements DataType<String>, CharSequence {
 
     @Override
     public String toString() {
-        return writeUso();
+        return this.writeUso();
     }
 }

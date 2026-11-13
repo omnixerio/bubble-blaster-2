@@ -14,14 +14,14 @@ public interface Tuple3Type<T, A, B, C> extends DataType<T> {
     void setC(C c);
 
     default <R> R mapA(Function<A, R> mapper) {
-        return mapper.apply(getA());
+        return mapper.apply(this.getA());
     }
 
     default <R> R mapB(Function<B, R> mapper) {
-        return mapper.apply(getB());
+        return mapper.apply(this.getB());
     }
 
     default <R> R mapC(Function<C, R> mapper) {
-        return mapper.apply(getC());
+        return mapper.apply(this.getC());
     }
 }

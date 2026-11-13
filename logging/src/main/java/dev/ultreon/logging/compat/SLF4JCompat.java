@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package net.quantumvoxel.logging.compat;
+package dev.ultreon.logging.compat;
 
 import org.slf4j.ILoggerFactory;
 import org.slf4j.IMarkerFactory;

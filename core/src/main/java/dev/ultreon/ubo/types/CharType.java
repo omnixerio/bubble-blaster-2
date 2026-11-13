@@ -71,6 +71,6 @@ public class CharType implements DataType<Character> {
 
     @Override
     public String toString() {
-        return writeUso();
+        return this.writeUso();
     }
 }

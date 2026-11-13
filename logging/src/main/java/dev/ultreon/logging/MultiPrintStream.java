@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package net.quantumvoxel.logging;
+package dev.ultreon.logging;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

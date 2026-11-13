@@ -71,6 +71,6 @@ public class FloatType implements DataType<Float> {
 
     @Override
     public String toString() {
-        return writeUso();
+        return this.writeUso();
     }
 }

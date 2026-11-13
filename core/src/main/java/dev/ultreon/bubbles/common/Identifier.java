@@ -6,9 +6,6 @@ import dev.ultreon.bubbles.BubbleBlaster;
 import dev.ultreon.bubbles.util.annotation.MethodsReturnNonnullByDefault;
 import dev.ultreon.bubbles.util.exceptions.SyntaxException;
 import dev.ultreon.libs.commons.v0.tuple.Pair;
-import org.checkerframework.common.reflection.qual.NewInstance;
-import org.checkerframework.common.value.qual.MinLen;
-import org.checkerframework.dataflow.qual.Pure;
 import org.jetbrains.annotations.*;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -37,7 +34,7 @@ public final class Identifier {
         this.path = path;
     }
 
-    public Identifier(@MinLen(3) @NotNull String name) {
+    public Identifier( @NotNull String name) {
         var split = name.split(":", 2);
         if (split.length == 2) {
             this.location = Identifier.testLocation(split[0]);
@@ -49,7 +46,7 @@ public final class Identifier {
     }
 
     @NotNull
-    @NewInstance
+    
     @Contract("_ -> new")
     public static Identifier parse(
             @NotNull String name) {
@@ -58,7 +55,7 @@ public final class Identifier {
 
     @Nullable
     @Contract("null -> null")
-    public static Identifier tryParse(@MinLen(3) @Nullable String name) {
+    public static Identifier tryParse( @Nullable String name) {
         if (name == null) return null;
 
         try {
@@ -98,10 +95,10 @@ public final class Identifier {
         return Objects.hash(this.location, this.path);
     }
 
-    @Pure
+    
     @NotNull
     @Override
-    @NewInstance
+    
     @Contract(pure = true)
     public String toString() {
         return this.location + ":" + this.path;
@@ -110,7 +107,7 @@ public final class Identifier {
     /**
      * @return object location (the mod id / namespace).
      */
-    @Pure
+    
     @NotNull
     @Contract(pure = true)
     public String location() {
@@ -120,38 +117,38 @@ public final class Identifier {
     /**
      * @return object path.
      */
-    @Pure
+    
     @NotNull
     @Contract(pure = true)
     public String path() {
         return this.path;
     }
 
-    @NewInstance
+    
     @Contract("_ -> new")
     public Identifier withLocation(String location) {
         return new Identifier(location, this.path);
     }
 
-    @NewInstance
+    
     @Contract("_ -> new")
     public Identifier withPath(String path) {
         return new Identifier(this.location, path);
     }
 
-    @NewInstance
+    
     @Contract("_ -> new")
     public Identifier mapLocation(Function<String, String> location) {
         return new Identifier(location.apply(this.location), this.path);
     }
 
-    @NewInstance
+    
     @Contract("_ -> new")
     public Identifier mapPath(Function<String, String> path) {
         return new Identifier(this.location, path.apply(this.path));
     }
 
-    @NewInstance
+    
     @Contract("_, _ -> new")
     public Identifier map(Function<String, String> path, Function<String, String> location) {
         return new Identifier(location.apply(this.location), path.apply(this.path));
@@ -161,9 +158,9 @@ public final class Identifier {
         return func.apply(this.location, this.path);
     }
 
-    @Pure
+    
     @NotNull
-    @NewInstance
+    
     @Unmodifiable
     @Contract(value = "-> new", pure = true)
     public List<String> toList() {
@@ -171,13 +168,13 @@ public final class Identifier {
     }
 
     @NotNull
-    @NewInstance
+    
     @Contract(" -> new")
     public ArrayList<String> toArrayList() {
         return Lists.newArrayList(this.location, this.path);
     }
 
-    @Pure
+    
     @NotNull
     @UnmodifiableView
     @Contract(pure = true)
@@ -185,17 +182,17 @@ public final class Identifier {
         return this.toList();
     }
 
-    @Pure
+    
     @NotNull
-    @NewInstance
+    
     @Contract(value = " -> new", pure = true)
     public Pair<String, String> toPair() {
         return new Pair<>(this.location, this.path);
     }
 
-    @Pure
+    
     @NotNull
-    @NewInstance
+    
     @Contract(value = " -> new", pure = true)
     public String[] toArray() {
         return new String[]{this.location, this.path};

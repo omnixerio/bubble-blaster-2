@@ -22,45 +22,32 @@
  * THE SOFTWARE.
  */
 
-package net.quantumvoxel.logging;
+package dev.ultreon.logging;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintStream;
 
-public class LogOutputStream extends OutputStream {
-    private final Logger logger;
-    private final StringBuffer buffer = new StringBuffer();
-    private final PrintStream out;
+class ANSIEscapingOutputStream extends OutputStream {
+    private final OutputStream delegate;
+    private boolean prefixing;
+    private boolean escaping;
 
-    public LogOutputStream(LoggerManager loggerManager, PrintStream out, String name) {
-        super();
-        this.out = out;
-
-        this.logger = loggerManager.createLogger(name);
+    public ANSIEscapingOutputStream(OutputStream delegate) {
+        this.delegate = delegate;
     }
 
     @Override
     public void write(int b) throws IOException {
-        synchronized (this) {
-            if (b == '\n' || b == '\r') {
-                flush();
-            } else {
-                this.buffer.append((char) b);
-            }
+        if (b == '\u001B') {
+            this.prefixing = true;
+        } else if (b == '[' && this.prefixing) {
+            this.prefixing = false;
+            this.escaping = true;
+        } else if (!this.escaping || this.prefixing) {
+            if (this.prefixing) this.delegate.write('\u001B');
+            this.delegate.write(b);
+        } else if (b == 'm') {
+            this.escaping = false;
         }
-    }
-
-    @Override
-    public void flush() {
-        if (this.buffer.length() == 0) {
-            return;
-        }
-        try {
-            this.logger.log(System.currentTimeMillis(), LogLevel.INFO, LogCategory.DEFAULT, this.buffer.toString(), null, false, false);
-        } catch (Throwable e) {
-            this.out.println("Failed to log message: " + e.getMessage());
-        }
-        this.buffer.setLength(0);
     }
 }

@@ -75,6 +75,6 @@ public class ShortType implements DataType<Short> {
 
     @Override
     public String toString() {
-        return writeUso();
+        return this.writeUso();
     }
 }

@@ -8,7 +8,6 @@ import dev.ultreon.bubbles.render.Insets;
 import dev.ultreon.bubbles.render.Renderer;
 import dev.ultreon.bubbles.render.gui.GuiStateListener;
 import dev.ultreon.bubbles.text.TextObject;
-import org.checkerframework.common.returnsreceiver.qual.This;
 
 public class Button extends AbstractButton implements GuiStateListener {
     protected TextObject text;
@@ -73,7 +72,7 @@ public class Button extends AbstractButton implements GuiStateListener {
             return this;
         }
 
-        public @This Builder font(BitmapFont font) {
+        public  Builder font(BitmapFont font) {
             this.font = font;
             return this;
         }

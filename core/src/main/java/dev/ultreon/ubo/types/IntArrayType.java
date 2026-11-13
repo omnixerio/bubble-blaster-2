@@ -106,7 +106,7 @@ public class IntArrayType implements ArrayType<int[], Integer> {
 
     @Override
     public String toString() {
-        return writeUso();
+        return this.writeUso();
     }
 
     @Override

@@ -9,7 +9,6 @@ import dev.ultreon.bubbles.render.gui.GuiStateListener;
 import dev.ultreon.bubbles.util.Enums;
 import dev.ultreon.bubbles.text.TextObject;
 import dev.ultreon.bubbles.text.Translatable;
-import org.checkerframework.common.returnsreceiver.qual.This;
 
 public class CycleButton<T extends Enum<T>> extends Button implements GuiStateListener {
     private final Class<T> componentType;
@@ -111,7 +110,7 @@ public class CycleButton<T extends Enum<T>> extends Button implements GuiStateLi
         }
 
         @Override
-        public @This Builder<T> font(BitmapFont font) {
+        public  Builder<T> font(BitmapFont font) {
             this.font = font;
             return this;
         }

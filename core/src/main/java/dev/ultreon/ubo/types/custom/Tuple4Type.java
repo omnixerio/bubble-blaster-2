@@ -16,15 +16,15 @@ public interface Tuple4Type<T, A, B, C, D> extends DataType<T> {
     void setD(D d);
 
     default <R> R mapA(Function<A, R> mapper) {
-        return mapper.apply(getA());
+        return mapper.apply(this.getA());
     }
     default <R> R mapB(Function<B, R> mapper) {
-        return mapper.apply(getB());
+        return mapper.apply(this.getB());
     }
     default <R> R mapC(Function<C, R> mapper) {
-        return mapper.apply(getC());
+        return mapper.apply(this.getC());
     }
     default <R> R mapD(Function<D, R> mapper) {
-        return mapper.apply(getD());
+        return mapper.apply(this.getD());
     }
 }

@@ -78,6 +78,6 @@ public class BigIntType implements DataType<BigInteger> {
 
     @Override
     public String toString() {
-        return writeUso();
+        return this.writeUso();
     }
 }

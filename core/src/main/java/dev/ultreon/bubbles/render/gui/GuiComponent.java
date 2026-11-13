@@ -15,7 +15,6 @@ import dev.ultreon.bubbles.render.Colors;
 import dev.ultreon.bubbles.render.Renderer;
 import dev.ultreon.bubbles.util.Functions;
 import dev.ultreon.libs.commons.v0.vector.Vec2i;
-import org.checkerframework.common.value.qual.IntRange;
 
 import java.util.Objects;
 
@@ -57,7 +56,7 @@ public abstract class GuiComponent implements GuiStateListener, RenderableListen
      * @param height size of the widget
      */
     @SuppressWarnings("ConstantValue")
-    public GuiComponent(int x, int y, @IntRange(from = 0) int width, @IntRange(from = 0) int height) {
+    public GuiComponent(int x, int y,  int width,  int height) {
         if (width < 0) throw new IllegalArgumentException("Width is negative");
         if (height < 0) throw new IllegalArgumentException("Height is negative");
 

@@ -22,13 +22,36 @@
  * THE SOFTWARE.
  */
 
-package net.quantumvoxel.logging;
+package dev.ultreon.logging;
 
-import java.io.OutputStream;
+import java.util.Objects;
 
-public class NullOutputStream extends OutputStream {
+public class LogCategory {
+    public static final LogCategory DEFAULT = new LogCategory("DEFAULT");
+    private final String name;
+
+    public LogCategory(String name) {
+        this.name = name;
+    }
+
     @Override
-    public void write(int b) {
+    public String toString() {
+        return this.name;
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || this.getClass() != o.getClass()) return false;
+        var that = (LogCategory) o;
+        return Objects.equals(this.name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.name);
+    }
+
+    public String getName() {
+        return this.name;
     }
 }

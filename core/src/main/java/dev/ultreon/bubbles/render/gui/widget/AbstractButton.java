@@ -8,13 +8,12 @@ import dev.ultreon.bubbles.render.Renderer;
 import dev.ultreon.bubbles.render.gui.GuiComponent;
 import dev.ultreon.libs.commons.v0.vector.Vec2i;
 import dev.ultreon.bubbles.text.TextObject;
-import org.checkerframework.common.value.qual.IntRange;
 
 public abstract class AbstractButton extends GuiComponent {
     protected Runnable command;
     private boolean pressed;
 
-    public AbstractButton(int x, int y, @IntRange(from = 0) int width, @IntRange(from = 0) int height) {
+    public AbstractButton(int x, int y,  int width,  int height) {
         super(x, y, width, height);
     }
 

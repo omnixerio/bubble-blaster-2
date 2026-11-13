@@ -1,4 +1,4 @@
-package dev.ultreon.bubbles.entity.ammo;
+package dev.ultreon.bubbles.ammo;
 
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Shape2D;
@@ -20,8 +20,8 @@ public class BasicAmmoType extends AmmoType {
     }
 
     @Override
-    public void render(Renderer renderer, Bullet entity) {
-        renderer.fill(this.getShape(entity), Colors.rgb(0xdfff00));
+    public void render(Renderer renderer, Bullet bullet) {
+        renderer.fill(this.getShape(bullet), Colors.rgb(0xdfff00));
     }
 
     @Override

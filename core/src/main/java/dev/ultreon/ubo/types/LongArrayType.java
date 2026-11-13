@@ -106,7 +106,7 @@ public class LongArrayType implements ArrayType<long[], Long> {
 
     @Override
     public String toString() {
-        return writeUso();
+        return this.writeUso();
     }
 
     @Override

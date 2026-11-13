@@ -81,6 +81,6 @@ public class BigDecType implements DataType<BigDecimal> {
 
     @Override
     public String toString() {
-        return writeUso();
+        return this.writeUso();
     }
 }

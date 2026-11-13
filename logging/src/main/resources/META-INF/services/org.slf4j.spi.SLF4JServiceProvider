@@ -22,4 +22,4 @@
 # THE SOFTWARE.
 #
 
-net.quantumvoxel.logging.compat.SLF4JCompat
+dev.ultreon.logging.compat.SLF4JCompat

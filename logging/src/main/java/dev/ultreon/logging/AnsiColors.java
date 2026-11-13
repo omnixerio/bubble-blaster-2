@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package net.quantumvoxel.logging;
+package dev.ultreon.logging;
 
 public final class AnsiColors {
     private AnsiColors() {

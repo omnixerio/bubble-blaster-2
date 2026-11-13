@@ -5,7 +5,6 @@ import dev.ultreon.bubbles.render.Colors;
 import dev.ultreon.bubbles.render.Renderer;
 import dev.ultreon.bubbles.render.gui.GuiComponent;
 import dev.ultreon.libs.commons.v0.Mth;
-import org.checkerframework.common.value.qual.IntRange;
 
 public class ScrollBar extends GuiComponent {
     public static final int SIZE = 20;
@@ -21,7 +20,7 @@ public class ScrollBar extends GuiComponent {
      * @param width  size create the widget
      * @param height size create the widget
      */
-    public ScrollBar(int x, int y, @IntRange(from = 0) int width, @IntRange(from = 0) int height) {
+    public ScrollBar(int x, int y,  int width,  int height) {
         super(x, y, width, height);
     }
 

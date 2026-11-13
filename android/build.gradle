@@ -9,27 +9,27 @@ repositories {
 dependencies {
     implementation project(":core")
     api 'com.android.support:appcompat-v7:33.0.0'
-    api "com.badlogicgames.gdx:gdx-backend-android:$gdx_version"
+    api "com.badlogicgames.gdx:gdx-backend-android:1.14.2"
     api 'androidx.appcompat:appcompat:1.6.1'
     api 'androidx.constraintlayout:constraintlayout:2.1.4'
-    natives "com.badlogicgames.gdx:gdx-platform:$gdx_version:natives-armeabi-v7a"
-    natives "com.badlogicgames.gdx:gdx-platform:$gdx_version:natives-arm64-v8a"
-    natives "com.badlogicgames.gdx:gdx-platform:$gdx_version:natives-x86"
-    natives "com.badlogicgames.gdx:gdx-platform:$gdx_version:natives-x86_64"
-    api "com.badlogicgames.box2dlights:box2dlights:$box_2d_lights_version"
-    api "com.badlogicgames.gdx:gdx-freetype:$gdx_version"
-    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdx_version:natives-armeabi-v7a"
-    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdx_version:natives-arm64-v8a"
-    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdx_version:natives-x86"
-    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdx_version:natives-x86_64"
-    api "com.badlogicgames.ashley:ashley:$ashley_version"
-    api "com.badlogicgames.gdx:gdx-ai:$ai_version"
-    api "com.badlogicgames.gdx-controllers:gdx-controllers-android:$gdx_controllers_version"
-    api "com.badlogicgames.gdx:gdx-box2d:$gdx_version"
-    natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdx_version:natives-armeabi-v7a"
-    natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdx_version:natives-arm64-v8a"
-    natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdx_version:natives-x86"
-    natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdx_version:natives-x86_64"
+    natives "com.badlogicgames.gdx:gdx-platform:1.14.2:natives-armeabi-v7a"
+    natives "com.badlogicgames.gdx:gdx-platform:1.14.2:natives-arm64-v8a"
+    natives "com.badlogicgames.gdx:gdx-platform:1.14.2:natives-x86"
+    natives "com.badlogicgames.gdx:gdx-platform:1.14.2:natives-x86_64"
+    api "com.badlogicgames.box2dlights:box2dlights:1.5"
+    api "com.badlogicgames.gdx:gdx-freetype:1.14.2"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:1.14.2:natives-armeabi-v7a"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:1.14.2:natives-arm64-v8a"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:1.14.2:natives-x86"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:1.14.2:natives-x86_64"
+    api "com.badlogicgames.ashley:ashley:1.7.4"
+    api "com.badlogicgames.gdx:gdx-ai:1.8.2"
+    api "com.badlogicgames.gdx-controllers:gdx-controllers-android:2.2.3"
+    api "com.badlogicgames.gdx:gdx-box2d:1.14.2"
+    natives "com.badlogicgames.gdx:gdx-box2d-platform:1.14.2:natives-armeabi-v7a"
+    natives "com.badlogicgames.gdx:gdx-box2d-platform:1.14.2:natives-arm64-v8a"
+    natives "com.badlogicgames.gdx:gdx-box2d-platform:1.14.2:natives-x86"
+    natives "com.badlogicgames.gdx:gdx-box2d-platform:1.14.2:natives-x86_64"
     api files("deps/androidawt-1.0.4.aar")
 }
 

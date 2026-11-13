@@ -4,7 +4,6 @@ import dev.ultreon.bubbles.render.Renderer;
 import dev.ultreon.bubbles.render.gui.GuiComponent;
 import dev.ultreon.bubbles.render.gui.GuiStateListener;
 import dev.ultreon.bubbles.render.gui.RenderableListener;
-import org.checkerframework.common.value.qual.IntRange;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public abstract class Container extends GuiComponent {
     protected GuiComponent pressed;
     protected GuiComponent focused;
 
-    public Container(int x, int y, @IntRange(from = 0) int width, @IntRange(from = 0) int height) {
+    public Container(int x, int y,  int width,  int height) {
         super(x, y, width, height);
     }
 

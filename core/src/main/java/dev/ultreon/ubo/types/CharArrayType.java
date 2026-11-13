@@ -107,7 +107,7 @@ public class CharArrayType implements ArrayType<char[], Character> {
 
     @Override
     public String toString() {
-        return writeUso();
+        return this.writeUso();
     }
 
     @Override

@@ -22,32 +22,13 @@
  * THE SOFTWARE.
  */
 
-package net.quantumvoxel.logging;
+package dev.ultreon.logging;
 
-import java.io.IOException;
 import java.io.OutputStream;
 
-class ANSIEscapingOutputStream extends OutputStream {
-    private final OutputStream delegate;
-    private boolean prefixing;
-    private boolean escaping;
-
-    public ANSIEscapingOutputStream(OutputStream delegate) {
-        this.delegate = delegate;
-    }
-
+public class NullOutputStream extends OutputStream {
     @Override
-    public void write(int b) throws IOException {
-        if (b == '\u001B') {
-            this.prefixing = true;
-        } else if (b == '[' && this.prefixing) {
-            this.prefixing = false;
-            this.escaping = true;
-        } else if (!this.escaping || this.prefixing) {
-            if (this.prefixing) this.delegate.write('\u001B');
-            this.delegate.write(b);
-        } else if (b == 'm') {
-            this.escaping = false;
-        }
+    public void write(int b) {
+
     }
 }

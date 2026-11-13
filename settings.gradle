@@ -1,1 +1,3 @@
+rootProject.name = "Bubble Blaster 2"
+
 include 'desktop', 'core', 'gameprovider', 'desktop-merge', 'minimal', 'logging'

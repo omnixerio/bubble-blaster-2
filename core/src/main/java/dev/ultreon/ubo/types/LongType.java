@@ -71,6 +71,6 @@ public class LongType implements DataType<Long> {
 
     @Override
     public String toString() {
-        return writeUso();
+        return this.writeUso();
     }
 }

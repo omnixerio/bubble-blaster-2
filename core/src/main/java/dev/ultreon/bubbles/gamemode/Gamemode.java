@@ -25,7 +25,6 @@ import dev.ultreon.bubbles.util.annotation.MethodsReturnNonnullByDefault;
 import dev.ultreon.libs.commons.v0.Identifier;
 import dev.ultreon.libs.commons.v0.Messenger;
 import dev.ultreon.bubbles.text.TextObject;
-import org.checkerframework.common.value.qual.IntRange;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -165,7 +164,7 @@ public abstract class Gamemode implements Controllable {
      * @return the spawn location for that entity, or null to use the entity location given to the entity using {@link SpawnInformation}.
      * @see World#spawn(Entity, SpawnInformation)
      */
-    public @Nullable Vector2D getSpawnPos(@NotNull Entity entity, @Nullable Vector2D pos, @NotNull SpawnUsage usage, @NotNull RandomSource random, @IntRange(from = 0) int retry) {
+    public @Nullable Vector2D getSpawnPos(@NotNull Entity entity, @Nullable Vector2D pos, @NotNull SpawnUsage usage, @NotNull RandomSource random,  int retry) {
         return null;
     }
 

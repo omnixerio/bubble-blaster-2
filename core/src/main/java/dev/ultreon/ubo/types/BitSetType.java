@@ -128,6 +128,6 @@ public class BitSetType implements DataType<BitSet> {
 
     @Override
     public String toString() {
-        return writeUso();
+        return this.writeUso();
     }
 }

@@ -71,6 +71,6 @@ public class BooleanType implements DataType<Boolean> {
 
     @Override
     public String toString() {
-        return writeUso();
+        return this.writeUso();
     }
 }

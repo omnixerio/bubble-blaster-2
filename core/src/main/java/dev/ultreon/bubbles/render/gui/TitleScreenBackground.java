@@ -66,7 +66,7 @@ public class TitleScreenBackground {
             renderer.fillGradient(0, 0, this.width, this.height, WorldRenderer.BG_TOP, WorldRenderer.BG_BOTTOM);
 
             for (var fakeBubble : this.bubbles)
-                WorldRenderer.drawBubble(renderer, fakeBubble.position.x, fakeBubble.position.y, fakeBubble.radius, 0, TYPE);
+                WorldRenderer.drawBubble(renderer, fakeBubble.position.x, fakeBubble.position.y, fakeBubble.radius, 0, TYPE, false);
         });
 
         renderer.fillGradient(0, 0, this.width, this.height, Colors.rgba(0x00, 0x00, 0x00, 0x80), Colors.rgba(0x00, 0x00, 0x00, 0x90));

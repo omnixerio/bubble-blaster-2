@@ -71,6 +71,6 @@ public class IntType implements DataType<Integer> {
 
     @Override
     public String toString() {
-        return writeUso();
+        return this.writeUso();
     }
 }

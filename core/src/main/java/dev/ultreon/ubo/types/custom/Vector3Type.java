@@ -20,27 +20,27 @@ public interface Vector3Type<T, V> extends DataType<T>, VectorType<V> {
     }
 
     default void set(V x, V y, V z) {
-        setX(x);
-        setY(y);
+        this.setX(x);
+        this.setY(y);
     }
 
     @Override
     default V get(int index) {
-        if (index == 0) return getX();
-        if (index == 1) return getY();
-        if (index == 2) return getZ();
+        if (index == 0) return this.getX();
+        if (index == 1) return this.getY();
+        if (index == 2) return this.getZ();
         throw new IndexOutOfBoundsException();
     }
 
     @Override
     default void set(int index, V value) {
-        if (index == 0) setX(value);
-        if (index == 1) setY(value);
-        if (index == 2) setZ(value);
+        if (index == 0) this.setX(value);
+        if (index == 1) this.setY(value);
+        if (index == 2) this.setZ(value);
     }
 
     default void fill(V value) {
-        set(value, value, value);
+        this.set(value, value, value);
     }
 
     @Override

@@ -46,6 +46,7 @@ import dev.ultreon.bubbles.event.v1.*;
 import dev.ultreon.bubbles.gamemode.Gamemode;
 import dev.ultreon.bubbles.init.*;
 import dev.ultreon.bubbles.input.*;
+import dev.ultreon.bubbles.item.ItemTypes;
 import dev.ultreon.bubbles.notification.Notification;
 import dev.ultreon.bubbles.notification.Notifications;
 import dev.ultreon.bubbles.player.InputController;
@@ -54,8 +55,10 @@ import dev.ultreon.bubbles.random.RandomSource;
 import dev.ultreon.bubbles.random.valuesource.RandomValueSource;
 import dev.ultreon.bubbles.registry.Registries;
 import dev.ultreon.bubbles.render.*;
+import dev.ultreon.bubbles.render.gui.TitleScreenBackground;
 import dev.ultreon.bubbles.render.gui.screen.*;
 import dev.ultreon.bubbles.save.GameSave;
+import dev.ultreon.bubbles.shop.Shop;
 import dev.ultreon.bubbles.world.World;
 import dev.ultreon.bubbles.world.WorldRenderer;
 import dev.ultreon.libs.collections.v0.maps.OrderedHashMap;
@@ -69,9 +72,6 @@ import dev.ultreon.libs.datetime.v0.Duration;
 import dev.ultreon.libs.registries.v0.Registry;
 import dev.ultreon.bubbles.resources.ResourceManager;
 import dev.ultreon.bubbles.lang.LanguageManager;
-import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
-import org.checkerframework.checker.nullness.qual.RequiresNonNull;
-import org.checkerframework.common.value.qual.IntRange;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -128,6 +128,7 @@ public final class BubbleBlaster extends ApplicationAdapter implements CrashFill
     public final Cursor arrowCursor;
     public final Cursor handCursor;
     public final RandomSource random = new JavaRandom();
+    public final TitleScreenBackground background;
 
     // Fonts.
     private FontSet sansFont;
@@ -158,7 +159,7 @@ public final class BubbleBlaster extends ApplicationAdapter implements CrashFill
     public Player player;
 
     // Values
-    @IntRange(from = 0) int fps;
+     int fps;
     private int currentTps;
 
     // Game states.
@@ -289,6 +290,7 @@ public final class BubbleBlaster extends ApplicationAdapter implements CrashFill
 
         this.sansFont = this.loadFont(BubbleBlaster.id("noto_sans/noto_sans_regular"), 16);
 
+        ItemTypes.register();
         BubbleTypes.register();
         AmmoTypes.register();
         Entities.register();
@@ -301,6 +303,7 @@ public final class BubbleBlaster extends ApplicationAdapter implements CrashFill
         GameplayEvents.register();
         Gamemodes.register();
         TextureCollections.register();
+        Shop.register();
 
         // Load game with loading screen.
         this.load(new ProgressMessenger(this::log, 1000));
@@ -337,6 +340,9 @@ public final class BubbleBlaster extends ApplicationAdapter implements CrashFill
 
         GameEvents.CLIENT_STARTED.factory().onClientStarted(this);
 
+        Shop.load();
+        Shop.save();
+
         // Start scene-manager.
         try {
             this.showScreen(new SplashScreen(), true);
@@ -350,6 +356,9 @@ public final class BubbleBlaster extends ApplicationAdapter implements CrashFill
         if (!this.window.isFocused()) {
             this.window.requestUserAttention();
         }
+
+
+        this.background = new TitleScreenBackground(this.getWidth(), this.getHeight());
     }
 
     public static BitmapFont createBitmapFont(Identifier id, int size) {
@@ -1000,7 +1009,7 @@ public final class BubbleBlaster extends ApplicationAdapter implements CrashFill
     /**
      * Stops game-thread.
      */
-    @RequiresNonNull({"ticking", "rendering", "gcThread"})
+    
     public synchronized void stop() {
     }
 
@@ -1496,18 +1505,22 @@ public final class BubbleBlaster extends ApplicationAdapter implements CrashFill
             this.mobileInput.tickScreen(screen);
         }
         final var player = this.player;
+        final var world = this.world;
+        final var loadedGame = this.loadedGame;
         if (player != null && screen == null) {
             this.controllerInput.tickPlayer(player);
             this.desktopInput.tickPlayer(player);
             this.mobileInput.tickPlayer(player);
         }
 
+        if ((world == null || loadedGame == null) && screen != null) {
+            this.background.tick();
+        }
+
         if (this.isLoaded()) {
             TickEvents.PRE_TICK_GAME.factory().onTickGame(this);
         }
 
-        final var world = this.world;
-        final var loadedGame = this.loadedGame;
         if (world != null && loadedGame != null && !BubbleBlaster.isPaused()) {
             this.controllerInput.tickWorld(world, loadedGame);
             this.desktopInput.tickWorld(world, loadedGame);
@@ -1589,6 +1602,11 @@ public final class BubbleBlaster extends ApplicationAdapter implements CrashFill
         this.profiler.section("Render Screen", () -> {
             if (screen != null) {
                 RenderEvents.RENDER_SCREEN_BEFORE.factory().onRenderScreenBefore(screen, renderer);
+
+                if (world == null || this.loadedGame == null) {
+                    this.background.render(renderer);
+                }
+
                 screen.render(this, renderer, mouseX, mouseY, frameTime);
                 if (GamePlatform.get().isMobile()) {
                     screen.renderCloseButton(renderer, mouseX, mouseY);
@@ -1749,7 +1767,7 @@ public final class BubbleBlaster extends ApplicationAdapter implements CrashFill
         }
     }
 
-    @EnsuresNonNull({"ticking"})
+    
     @SuppressWarnings("Convert2Lambda")
     public void windowLoaded() {
         this.running = true;

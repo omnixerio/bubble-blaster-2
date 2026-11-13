@@ -18,22 +18,22 @@ public interface Tuple5Type<T, A, B, C, D, E> extends DataType<T> {
     void setE(E e);
 
     default <R> R mapA(Function<A, R> mapper) {
-        return mapper.apply(getA());
+        return mapper.apply(this.getA());
     }
 
     default <R> R mapB(Function<B, R> mapper) {
-        return mapper.apply(getB());
+        return mapper.apply(this.getB());
     }
 
     default <R> R mapC(Function<C, R> mapper) {
-        return mapper.apply(getC());
+        return mapper.apply(this.getC());
     }
 
     default <R> R mapD(Function<D, R> mapper) {
-        return mapper.apply(getD());
+        return mapper.apply(this.getD());
     }
 
     default <R> R mapE(Function<E, R> mapper) {
-        return mapper.apply(getE());
+        return mapper.apply(this.getE());
     }
 }
