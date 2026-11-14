@@ -1946,7 +1946,13 @@ public final class BubbleBlaster extends ApplicationAdapter implements CrashFill
     @ApiStatus.Internal
     @CanIgnoreReturnValue
     public boolean mouseWheel(int x, int y, float ignoredAmountX, float amountY) {
+        if (this.player != null && this.screen == null) {
+            this.player.hotbar.mouseWheel(x, y, amountY);
+            return true;
+        }
         var screen = this.getCurrentScreen();
+
+
         return screen != null && screen.mouseWheel(x, y, amountY);
 
     }

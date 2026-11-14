@@ -33,7 +33,7 @@ public class ModernHud extends HudType {
 
     // Colors
     private static final Color LEVEL_UP_COLOR = Colors.argb(0x90ffffff);
-    public static final Color WHITE = Colors.argb(0x40ffffff);
+    public static final Color WHITE = Colors.argb(0x20ffffff);
     private boolean showLevelUp;
     private long hideLevelUpTime;
     private int level;
@@ -84,8 +84,8 @@ public class ModernHud extends HudType {
     }
 
     private void drawHotbar(Renderer renderer, Player player, FrameBuffer blurredFrame) {
-        renderer.drawBlurredFrameRegion(blurredFrame.getColorBufferTexture(), this.width() / 2 - 20 - 40 - 40, 20, 40 * 5, 40);
-        renderer.fill(this.width() / 2 - 20 - 40 - 40, 20, 40 * 5, 40, Colors.rgba(0x00, 0x00, 0x00, 0x80));
+        renderer.drawBlurredFrameRegion(blurredFrame.getColorBufferTexture(), this.width() / 2 - 20 - 40 - 40 - 10, 10, 40 * 5 + 20, 60);
+        renderer.fill(this.width() / 2 - 20 - 40 - 40 - 10, 10, 40 * 5 + 20, 60, Colors.rgba(0x00, 0x00, 0x00, 0x80));
         renderer.box(this.width() / 2 - 20 - 40 - 40 + 2, 22, 36, 36, WHITE);
         renderer.box(this.width() / 2 - 20 - 40 + 2, 22, 36, 36, WHITE);
         renderer.box(this.width() / 2 - 20 + 2, 22, 36, 36, WHITE);

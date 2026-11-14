@@ -10,6 +10,7 @@ import java.util.Arrays;
 public class Hotbar {
     private final ItemStack[] items = new ItemStack[5];
     private int selected;
+    private float selectedF;
 
     public Hotbar() {
         this.selected = 0;
@@ -42,6 +43,9 @@ public class Hotbar {
         this.item(renderer, renderer.getWidth() / 2 - 20, 22, 36, 36, Color.WHITE, 2);
         this.item(renderer, renderer.getWidth() / 2 + 20, 22, 36, 36, Color.WHITE, 3);
         this.item(renderer, renderer.getWidth() / 2 + 20 + 40, 22, 36, 36, Color.WHITE, 4);
+
+        var x = (renderer.getWidth() / 2 - 20 - 40 - 40 + 2) + selected * 40;
+        renderer.fillEffect(x, 58, 36, 2);
     }
 
     private void item(Renderer renderer, int x, int y, int width, int height, Color color, int slot) {
@@ -50,5 +54,10 @@ public class Hotbar {
             item.render(renderer, x, y, width, height, color);
             renderer.drawTextRight(Fonts.DEFAULT.get(), String.valueOf(slot), x + width - 4, y + height - 4, Color.WHITE);
         }
+    }
+
+    public void mouseWheel(int x, int y, float amountY) {
+        this.selectedF = Math.clamp(this.selectedF + amountY, 0, this.items.length - 1);
+        this.selected = (int) this.selectedF;
     }
 }
