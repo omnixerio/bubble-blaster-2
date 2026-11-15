@@ -1,22 +1,23 @@
 package dev.ultreon.bubbles.shop;
 
 import dev.ultreon.bubbles.text.TextObject;
+import dev.ultreon.libs.commons.v0.Identifier;
 import dev.ultreon.ubo.types.DataType;
 import dev.ultreon.ubo.types.MapType;
 
-public class CosmeticItem implements ShopItem {
-    public static final CosmeticItem GREEN_SKIN = new CosmeticItem("green_skin", 200);
-    public static final CosmeticItem BLUE_SKIN = new CosmeticItem("blue_skin", 200);
-    public static final CosmeticItem FIRE_TRAIL = new CosmeticItem("fire_trail", 300);
+public class Cosmetic implements ShopItem {
+    public static final Cosmetic GREEN_SKIN = new Cosmetic("green_skin", 200);
+    public static final Cosmetic BLUE_SKIN = new Cosmetic("blue_skin", 200);
+    public static final Cosmetic FIRE_TRAIL = new Cosmetic("fire_trail", 300);
 
     private final TextObject name;
     private final String id;
     private final int price;
     private boolean bought;
 
-    public CosmeticItem(String id, int price) {
+    public Cosmetic(String id, int price) {
         this.name = TextObject.translation("bubbleblaster.cosmetics." + id);
-        this.id = "cosmetic/" + id;
+        this.id = "cosmetics/" + id;
         this.price = price;
     }
 
@@ -56,5 +57,10 @@ public class CosmeticItem implements ShopItem {
     @Override
     public String getId() {
         return this.id;
+    }
+
+    @Override
+    public Identifier getIcon() {
+        return new Identifier("bubbleblaster", this.id);
     }
 }

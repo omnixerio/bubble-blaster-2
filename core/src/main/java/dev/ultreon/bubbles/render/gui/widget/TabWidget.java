@@ -54,6 +54,13 @@ public class TabWidget extends Container implements GuiStateListener {
         }
 
         @Override
+        public boolean mouseRelease(int x, int y, int button) {
+            var pressedWidget = this.pressed;
+            this.pressed = null;
+            return pressedWidget != null && pressedWidget.mouseRelease(x, y, button);
+        }
+
+        @Override
         public void render(Renderer renderer, int mouseX, int mouseY, float deltaTime) {
             for (var child : this.children)
                 if (child.visible) {

@@ -1,6 +1,7 @@
 package dev.ultreon.bubbles.shop;
 
 import dev.ultreon.bubbles.text.TextObject;
+import dev.ultreon.libs.commons.v0.Identifier;
 import dev.ultreon.ubo.types.DataType;
 import dev.ultreon.ubo.types.MapType;
 
@@ -24,4 +25,6 @@ public interface ShopItem {
     TextObject getName();
 
     String getId();
+
+    Identifier getIcon();
 }

@@ -22,6 +22,7 @@ public class NativeImage extends Texture {
 
     public NativeImage(InputStream stream) throws IOException {
         super(NativeImage.setupPixmap(new Pixmap(NativeImage.read(stream))));
+        this.setFilter(TextureFilter.MipMapLinearLinear, TextureFilter.MipMapLinearLinear);
     }
 
     private static Pixmap setupPixmap(Pixmap pixmap) {

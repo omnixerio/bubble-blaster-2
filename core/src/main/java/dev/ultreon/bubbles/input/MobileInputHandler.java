@@ -50,7 +50,7 @@ public class MobileInputHandler extends InputHandler<MobileInput> {
 
         if (this.shoot) {
             this.shoot = false;
-            player.shoot();
+            player.useSelectedItem();
         }
         if (this.boost) {
             this.boost = false;

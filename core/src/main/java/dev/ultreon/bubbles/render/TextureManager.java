@@ -18,11 +18,11 @@ public final class TextureManager {
 
     static {
         var pixmap = new Pixmap(2, 2, Pixmap.Format.RGBA8888);
-        pixmap.setColor(0, 0, 0, 1);
+        pixmap.setColor(0.5f, 0.5f, 0.5f, 1);
         pixmap.fill();
-        pixmap.setColor(1, 0, 1, 1);
-        pixmap.drawPixel(0, 0, 0xff00ffff);
-        pixmap.drawPixel(1, 1, 0xff00ffff);
+        pixmap.setColor(1, 1, 1, 1);
+        pixmap.drawPixel(0, 0, 0xffffffff);
+        pixmap.drawPixel(1, 1, 0xffffffff);
 
         DEFAULT_TEX = new Texture(pixmap);
 

@@ -1,13 +1,14 @@
 package dev.ultreon.bubbles.shop;
 
 import dev.ultreon.bubbles.text.TextObject;
+import dev.ultreon.libs.commons.v0.Identifier;
 import dev.ultreon.ubo.types.DataType;
 import dev.ultreon.ubo.types.MapType;
 
-public class BoostItem implements ShopItem {
-    public static final BoostItem SPEED_BOOST = new BoostItem("speed", 50, 5);
-    public static final BoostItem ATTACK_BOOST = new BoostItem("attack", 50, 5);
-    public static final BoostItem RESISTANCE_BOOST = new BoostItem("resistance", 50, 5);
+public class Boost implements ShopItem {
+    public static final Boost SPEED_BOOST = new Boost("speed", 50, 5);
+    public static final Boost ATTACK_BOOST = new Boost("attack", 50, 5);
+    public static final Boost RESISTANCE_BOOST = new Boost("resistance", 50, 5);
 
     private final TextObject name;
     private final int price;
@@ -15,8 +16,8 @@ public class BoostItem implements ShopItem {
     private final String id;
     private int inventoryCount;
 
-    public BoostItem(String id, int price, int maxCount) {
-        this.id = "boost/" + id;
+    public Boost(String id, int price, int maxCount) {
+        this.id = "boosts/" + id;
         this.name = TextObject.translation("bubbleblaster.boosts." + id);
         this.price = price;
         this.maxCount = maxCount;
@@ -58,5 +59,10 @@ public class BoostItem implements ShopItem {
     @Override
     public String getId() {
         return this.id;
+    }
+
+    @Override
+    public Identifier getIcon() {
+        return new Identifier("bubbleblaster", this.id);
     }
 }

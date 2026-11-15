@@ -1059,7 +1059,15 @@ public class Renderer {
     public FrameBuffer captureBlurredFrame() {
         this.flush();
         this.batch.end();
-        var capturedPixmap = Pixmap.createFromFrameBuffer(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
+        var backBufferWidth = Gdx.graphics.getBackBufferWidth();
+        var backBufferHeight = Gdx.graphics.getBackBufferHeight();
+
+        if (backBufferWidth <= 0 || backBufferHeight <= 0) {
+            backBufferWidth = 1;
+            backBufferHeight = 1;
+        }
+
+        var capturedPixmap = Pixmap.createFromFrameBuffer(0, 0, backBufferWidth, backBufferHeight);
         Texture capturedTexture = null;
         FrameBuffer blurredFrame = null;
         var targetBound = false;
@@ -1067,7 +1075,7 @@ public class Renderer {
         try {
             capturedTexture = new Texture(capturedPixmap);
             capturedTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-            blurredFrame = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), false);
+            blurredFrame = new FrameBuffer(Pixmap.Format.RGBA8888, backBufferWidth, backBufferHeight, false);
             blurredFrame.begin();
             targetBound = true;
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -1075,7 +1083,7 @@ public class Renderer {
             this.batch.disableBlending();
             this.batch.begin();
             this.batch.setShader(this.blurShader);
-            this.blurShader.setUniformf("iResolution", Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
+            this.blurShader.setUniformf("iResolution", backBufferWidth, backBufferHeight);
             this.blurShader.setUniformf("iBlurRadius", Config.blurRadius);
             this.batch.draw(capturedTexture, 0, 0, this.getWidth(), this.getHeight());
             this.batch.flush();

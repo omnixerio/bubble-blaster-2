@@ -2,7 +2,10 @@ package dev.ultreon.bubbles.entity.player;
 
 import com.badlogic.gdx.graphics.Color;
 import dev.ultreon.bubbles.item.ItemType;
+import dev.ultreon.bubbles.registry.Registries;
 import dev.ultreon.bubbles.render.Renderer;
+import dev.ultreon.libs.commons.v0.Identifier;
+import dev.ultreon.ubo.types.MapType;
 
 public class ItemStack {
     private final ItemType item;
@@ -15,6 +18,12 @@ public class ItemStack {
     public ItemStack(ItemType item, int count) {
         this.item = item;
         this.setCount(count);
+    }
+
+    public static ItemStack load(MapType mapType) {
+        var type = Registries.ITEMS.getValue(Identifier.parse(mapType.getString("type")));
+        var count = mapType.getInt("count");
+        return new ItemStack(type, count);
     }
 
     public ItemType getType() {
@@ -51,5 +60,16 @@ public class ItemStack {
 
     public void render(Renderer renderer, int x, int y, int width, int height, Color color) {
         this.getType().render(renderer, x, y, width, height, color);
+    }
+
+    public MapType save() {
+        var data = new MapType();
+        data.putString("type", Registries.ITEMS.getKey(this.getType()).toString());
+        data.putInt("count", this.getCount());
+        return data;
+    }
+
+    public int maxStackSize() {
+        return 15;
     }
 }

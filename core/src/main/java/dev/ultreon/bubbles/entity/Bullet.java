@@ -28,14 +28,14 @@ public class Bullet extends Entity {
     private int popsRemaining = 4;
 
     public Bullet(World world) {
-        this(AmmoTypes.BASIC, new Vector2D(), 0, world);
+        this(AmmoTypes.BASIC, world.getPlayer(), new Vector2D(), 0, world);
     }
 
     public Bullet(World world, AmmoType ammoType) {
-        this(ammoType, new Vector2D(), 0, world);
+        this(ammoType, world.getPlayer(), new Vector2D(), 0, world);
     }
 
-    public Bullet(AmmoType type, Vector2D pos, float rotation, World world) {
+    public Bullet(AmmoType type, Player owner, Vector2D pos, float rotation, World world) {
         super(Entities.BULLET, world);
 
         this.pos.set(pos);
@@ -50,7 +50,8 @@ public class Bullet extends Entity {
         this.markAsCollidable(Entities.BUBBLE);
         this.markAsAttackable(Entities.BUBBLE);
 
-        this.popsRemaining = world.getGamemode().getBulletPops();
+        this.owner = owner;
+        this.popsRemaining = owner.getBulletPiercing();
     }
 
     public int getPopsRemaining() {
@@ -77,7 +78,6 @@ public class Bullet extends Entity {
     public void onCollision(Entity other, double deltaTime) {
         if (this.owner == null) return;
         if (other instanceof LivingEntity && ((LivingEntity) other).isInvincible()) {
-            var livingEntity = (LivingEntity) other;
             return;
         }
 

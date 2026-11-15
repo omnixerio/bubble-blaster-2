@@ -92,7 +92,7 @@ public class ModernHud extends HudType {
         renderer.box(this.width() / 2 + 20 + 2, 22, 36, 36, WHITE);
         renderer.box(this.width() / 2 + 20 + 40 + 2, 22, 36, 36, WHITE);
 
-        player.hotbar.render(renderer);
+        this.game.hotbar.render(renderer);
     }
 
     private void drawBadgeBackground(Renderer renderer, FrameBuffer blurredFrame) {

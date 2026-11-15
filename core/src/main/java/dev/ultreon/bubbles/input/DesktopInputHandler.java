@@ -43,7 +43,7 @@ public class DesktopInputHandler extends InputHandler<DesktopInput> {
         player.moving(moving);
         player.rotating(rotating);
 
-        if (KeyBindings.SHOOT.isJustPressed()) player.shoot();
+        if (KeyBindings.USE_ITEM.isJustPressed()) player.useSelectedItem();
         if (KeyBindings.BOOST.isJustPressed()) player.boost();
         player.setBrake(KeyBindings.BRAKE.isPressed());
         return false;

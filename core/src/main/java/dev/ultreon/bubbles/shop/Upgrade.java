@@ -1,14 +1,15 @@
 package dev.ultreon.bubbles.shop;
 
 import dev.ultreon.bubbles.text.TextObject;
+import dev.ultreon.libs.commons.v0.Identifier;
 import dev.ultreon.ubo.types.DataType;
 import dev.ultreon.ubo.types.MapType;
 
-public class UpgradeItem implements ShopItem {
-    public static final UpgradeItem HEALTH = new UpgradeItem("health", 100);
-    public static final UpgradeItem SPEED = new UpgradeItem("speed", 100, 5);
-    public static final UpgradeItem AMMO_RELOAD_SPEED = new UpgradeItem("ammo_reload_speed", 100, 5);
-    public static final UpgradeItem AMMO_PIERCING = new UpgradeItem("ammo_piercing", 100, 10);
+public class Upgrade implements ShopItem {
+    public static final Upgrade HEALTH = new Upgrade("health", 100);
+    public static final Upgrade SPEED = new Upgrade("speed", 100, 5);
+    public static final Upgrade AMMO_RELOAD_SPEED = new Upgrade("ammo_reload_speed", 100, 5);
+    public static final Upgrade AMMO_PIERCING = new Upgrade("ammo_piercing", 100, 10);
 
     private final TextObject name;
     private final int basePrice;
@@ -16,12 +17,12 @@ public class UpgradeItem implements ShopItem {
     private int level = 0;
     private String id;
 
-    public UpgradeItem(String name, int basePrice) {
+    public Upgrade(String name, int basePrice) {
         this(name, basePrice, -1);
     }
 
-    public UpgradeItem(String id, int basePrice, int maxLevel) {
-        this.id = "upgrade/" + id;
+    public Upgrade(String id, int basePrice, int maxLevel) {
+        this.id = "upgrades/" + id;
         this.name = TextObject.translation("bubbleblaster.upgrades." + id);
         this.basePrice = basePrice;
         this.maxLevel = maxLevel;
@@ -48,7 +49,7 @@ public class UpgradeItem implements ShopItem {
 
     @Override
     public int getPrice() {
-        return (int) (this.basePrice * (this.level * 1.625));
+        return (int) (this.basePrice * ((this.level + 1) * 1.625));
     }
 
     @Override
@@ -76,5 +77,10 @@ public class UpgradeItem implements ShopItem {
     @Override
     public String getId() {
         return this.id;
+    }
+
+    @Override
+    public Identifier getIcon() {
+        return new Identifier("bubbleblaster", this.id);
     }
 }

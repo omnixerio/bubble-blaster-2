@@ -27,11 +27,11 @@ public final class Item implements IItemProvider, StateHolder, TagHolder {
 
     @Override
     public @NotNull MapType save() {
-        var document = new MapType();
-        document.put("Tag", this.tag);
-        document.putString("type", Registries.ITEMS.getKey(this.type).toString());
+        var data = new MapType();
+        data.put("Tag", this.tag);
+        data.putString("type", Registries.ITEMS.getKey(this.type).toString());
 
-        return document;
+        return data;
     }
 
     @Override

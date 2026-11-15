@@ -41,6 +41,7 @@ import dev.ultreon.bubbles.data.GlobalSaveData;
 import dev.ultreon.bubbles.debug.DebugRenderer;
 import dev.ultreon.bubbles.debug.Profiler;
 import dev.ultreon.bubbles.debug.ThreadSection;
+import dev.ultreon.bubbles.entity.player.Hotbar;
 import dev.ultreon.bubbles.entity.player.Player;
 import dev.ultreon.bubbles.event.v1.*;
 import dev.ultreon.bubbles.gamemode.Gamemode;
@@ -157,6 +158,7 @@ public final class BubbleBlaster extends ApplicationAdapter implements CrashFill
 
     // Player entity
     public Player player;
+    public final Hotbar hotbar = new Hotbar();
 
     // Values
      int fps;
@@ -304,6 +306,8 @@ public final class BubbleBlaster extends ApplicationAdapter implements CrashFill
         Gamemodes.register();
         TextureCollections.register();
         Shop.register();
+
+        this.hotbar.load();
 
         // Load game with loading screen.
         this.load(new ProgressMessenger(this::log, 1000));
@@ -1913,7 +1917,8 @@ public final class BubbleBlaster extends ApplicationAdapter implements CrashFill
     @CanIgnoreReturnValue
     public boolean mousePress(int screenX, int screenY, int ignoredPointer, int button) {
         @Nullable Screen screen = this.getCurrentScreen();
-        return screen != null && screen.mousePress(screenX, screenY, button);
+        if (screen != null) return screen.mousePress(screenX, screenY, button);
+        return false;
 
     }
 
@@ -1947,7 +1952,7 @@ public final class BubbleBlaster extends ApplicationAdapter implements CrashFill
     @CanIgnoreReturnValue
     public boolean mouseWheel(int x, int y, float ignoredAmountX, float amountY) {
         if (this.player != null && this.screen == null) {
-            this.player.hotbar.mouseWheel(x, y, amountY);
+            this.hotbar.mouseWheel(x, y, amountY);
             return true;
         }
         var screen = this.getCurrentScreen();

@@ -82,7 +82,7 @@ public class ControllerInputHandler extends InputHandler<ControllerInput> {
 
         player.rotating(moveX);
 
-        if (controller.getButton(mapping.buttonA)) player.shoot();
+        if (controller.getButton(mapping.buttonA)) player.useSelectedItem();
         if (controller.getButton(mapping.buttonB)) player.boost();
 
         return true;

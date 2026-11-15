@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.*;
 import dev.ultreon.bubbles.*;
 import dev.ultreon.bubbles.effect.StatusEffect;
 import dev.ultreon.bubbles.entity.Bubble;
-import dev.ultreon.bubbles.entity.Bullet;
 import dev.ultreon.bubbles.entity.Entity;
 import dev.ultreon.bubbles.entity.LivingEntity;
 import dev.ultreon.bubbles.entity.attribute.Attribute;
@@ -15,14 +14,13 @@ import dev.ultreon.bubbles.event.v1.PlayerEvents;
 import dev.ultreon.bubbles.gamemode.openworld.OpenWorldMode;
 import dev.ultreon.bubbles.init.Entities;
 import dev.ultreon.bubbles.init.StatusEffects;
-import dev.ultreon.bubbles.item.AmmoItem;
 import dev.ultreon.bubbles.item.collection.PlayerItemCollection;
 import dev.ultreon.bubbles.player.InputController;
 import dev.ultreon.bubbles.registry.Registries;
 import dev.ultreon.bubbles.render.Colors;
 import dev.ultreon.bubbles.render.Renderer;
 import dev.ultreon.bubbles.render.gui.screen.CommandScreen;
-import dev.ultreon.bubbles.util.TimeProcessor;
+import dev.ultreon.bubbles.shop.Upgrade;
 import dev.ultreon.bubbles.util.TimeUtils;
 import dev.ultreon.bubbles.vector.Vector2D;
 import dev.ultreon.bubbles.world.World;
@@ -48,8 +46,6 @@ public class Player extends LivingEntity implements InputController {
     private final Polygon arrowShape;
     private boolean joinInvincibility;
     private int invincibilityTicks;
-
-    public final Hotbar hotbar = new Hotbar();
 
     // Motion (Arrow Keys).
     private float moving = 0f;
@@ -681,27 +677,13 @@ public class Player extends LivingEntity implements InputController {
         return 20;
     }
 
-    public void shoot() {
-        this.shoot(false);
-    }
+    public void useSelectedItem() {
+        var hotbar = this.game.hotbar;
+        var selected = hotbar.getSelected();
+        var item = hotbar.get(selected);
+        if (item == null) return;
 
-    public void shoot(boolean force) {
-        var selected = this.hotbar.getSelected();
-        var selectedItem = this.hotbar.get(selected);
-        if (selectedItem == null) return;
-        if (!(selectedItem.getType() instanceof AmmoItem ammoItem)) return;
-        if (!force && !this.canShoot()) return;
-
-        if (!selectedItem.shrink(1)) {
-            this.hotbar.set(selected, null);
-        }
-
-        this.shootCooldown = TimeProcessor.millisToTicks(Constants.SHOOT_COOLDOWN);
-
-        var bulletPos = this.pos.cpy();
-        var bullet = new Bullet(ammoItem.getAmmoType(), bulletPos, this.rotation, this.world);
-        bullet.setOwner(this);
-        this.world.spawn(bullet, SpawnInformation.triggeredSpawn(this, this.world));
+        item.getType().use(this, hotbar, selected);
     }
 
     public void boost() {
@@ -717,10 +699,6 @@ public class Player extends LivingEntity implements InputController {
 
     private boolean canBoost() {
         return this.boostRefillTimer <= 0;
-    }
-
-    public boolean canShoot() {
-        return this.shootCooldown <= 0;
     }
 
     public int getInvincibilityTicks() {
@@ -769,5 +747,9 @@ public class Player extends LivingEntity implements InputController {
             }
         }
         return false;
+    }
+
+    public int getBulletPiercing() {
+        return Upgrade.AMMO_PIERCING.getLevel() + 1;
     }
 }
