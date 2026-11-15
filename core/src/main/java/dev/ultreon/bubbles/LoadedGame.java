@@ -103,6 +103,17 @@ public class LoadedGame implements Controllable {
 
     private static void collideEntities(Entity entityA, Entity entityB) {
         var delta = 1.0 / TPS;
+
+        // Bubble-to-bubble contact is never an attack. Apply any configured
+        // bounce impulses before callbacks can run pop logic.
+        if (entityA instanceof Bubble && entityB instanceof Bubble) {
+            var bubbleA = (Bubble) entityA;
+            var bubbleB = (Bubble) entityB;
+            if (bubbleA.getBounceAmount() > 0) bubbleA.onCollision(bubbleB, delta);
+            if (bubbleB.getBounceAmount() > 0) bubbleB.onCollision(bubbleA, delta);
+            return;
+        }
+
         if (entityA.isCollidableWith(entityB)) {
             // Handling collision by posting collision event, and let the intersected entities attack each other.
             EntityEvents.COLLISION.factory().onCollision(delta, entityA, entityB);
@@ -112,13 +123,6 @@ public class LoadedGame implements Controllable {
         if (entityB.isCollidableWith(entityA)) {
             EntityEvents.COLLISION.factory().onCollision(delta, entityB, entityA);
             entityB.onCollision(entityA, delta);
-        }
-
-        // Bubble-to-bubble contact is a physical bounce for bouncy bubbles,
-        // not an attack. Keep it out of the generic collision damage below.
-        if (entityA instanceof Bubble && entityB instanceof Bubble &&
-                (((Bubble) entityA).getBounceAmount() > 0 || ((Bubble) entityB).getBounceAmount() > 0)) {
-            return;
         }
 
         if (entityA instanceof LivingEntity && entityB.doesAttack(entityA) && entityA.canBeAttackedBy(entityB)) {

@@ -94,13 +94,13 @@ public class Player extends LivingEntity implements InputController {
 
         this.velocity.setZero();
 
-        this.attributes.setBase(Attribute.DEFENSE, 1f);
+        this.attributes.setBase(Attribute.DEFENSE, 1f + Upgrade.DEFENSE.getLevel() * 0.5f);
         this.attributes.setBase(Attribute.ATTACK, 0.75f);
-        this.attributes.setBase(Attribute.MAX_HEALTH, 30f);
-        this.attributes.setBase(Attribute.SPEED, 4f);
+        this.attributes.setBase(Attribute.MAX_HEALTH, 30f + Upgrade.HEALTH.getLevel() * 10f);
+        this.attributes.setBase(Attribute.SPEED, 4f + Upgrade.SPEED.getLevel() * 0.5f);
         this.attributes.setBase(Attribute.SCORE_MODIFIER, 1f);
 
-        this.health = 30f;
+        this.health = 30f + Upgrade.HEALTH.getLevel() * 10f;
 
         for (var entityType : Registries.ENTITIES.values()) {
             this.markAsAttackable(entityType);

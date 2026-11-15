@@ -6,8 +6,8 @@ import dev.ultreon.bubbles.init.Entities;
 import dev.ultreon.bubbles.random.valuesource.ConstantValueSource;
 import dev.ultreon.bubbles.random.valuesource.RandomValueSource;
 
-public class PoisonBubble extends BubbleType {
-    public PoisonBubble() {
+public class AcidicBubble extends BubbleType {
+    public AcidicBubble() {
         this.setColors("#7fff00,#9faf1f,#bf7f3f,#df3f5f,#ff007f");
 
         this.setPriority(1_550_000L);

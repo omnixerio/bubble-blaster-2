@@ -77,7 +77,7 @@ public class BubbleTypes {
             .difficulty(10)
             .build());
     public static final DamageBubble DAMAGE = BubbleTypes.register("damage", new DamageBubble());
-    public static final BubbleType POISON = BubbleTypes.register("poison", new PoisonBubble());
+    public static final BubbleType POISON = BubbleTypes.register("acidic", new AcidicBubble());
     public static final HealBubble HEAL = BubbleTypes.register("heal", new HealBubble());
     public static final UltraBubble ULTRA = BubbleTypes.register("ultra", new UltraBubble());
     public static final LevelUpBubble LEVEL_UP = BubbleTypes.register("level_up", new LevelUpBubble());

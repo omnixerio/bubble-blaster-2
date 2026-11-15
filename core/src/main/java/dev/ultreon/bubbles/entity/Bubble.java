@@ -2,7 +2,9 @@ package dev.ultreon.bubbles.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -57,6 +59,7 @@ public class Bubble extends AbstractBubbleEntity {
     protected int baseSize;
     protected float bounceAmount;
     protected float baseBounceAmount;
+    private final Vector2 bounceVelocity = new Vector2();
 
     // Bubble type.
     protected BubbleType bubbleType;
@@ -177,12 +180,18 @@ public class Bubble extends AbstractBubbleEntity {
             return;
         }
 
+        if (this.bounceAmount > 0) {
+            // Apply the impulse before effects or pop checks can return.
+            other.bounceOff(this, this.bounceAmount, (float) deltaTime);
+        }
+
         this.bubbleType.onCollision(this, other);
 
-        if (this.bounceAmount > 0) {
-            // bounceAmount is an impulse strength. Do not scale it by the
-            // per-tick delta: that made the configured bounce nearly vanish.
-            other.bounceOff(this, this.bounceAmount, (float) deltaTime);
+        var has = other.attributes.has(Attribute.ATTACK);
+        if (has && other.doesAttack(this) && this.canBeAttackedBy(other) &&
+                other.attributes.get(Attribute.ATTACK) > this.bounceAmount) {
+            this.pop();
+            return;
         }
     }
 
@@ -254,12 +263,26 @@ public class Bubble extends AbstractBubbleEntity {
         }
 
         super.tick(world);
+
+        if (!this.bounceVelocity.isZero()) {
+            this.pos.add(this.bounceVelocity.x, this.bounceVelocity.y);
+            this.bounceVelocity.scl(0.8f);
+            if (this.bounceVelocity.len2() < 0.000001f) {
+                this.bounceVelocity.setZero();
+            }
+        }
         
         // Update light body position to match bubble position
         this.updateLightBody();
 
         if (!isOpenWorld && this.pos.x + this.radius < 0) {
-            this.delete();
+            if (this.bounceVelocity.x < 0) {
+                this.pos.x = -this.radius;
+                this.rotation = 0;
+                this.bounceVelocity.x = Math.abs(this.bounceVelocity.x);
+            } else {
+                this.delete();
+            }
         }
     }
 
@@ -406,6 +429,16 @@ public class Bubble extends AbstractBubbleEntity {
         return this.bounceAmount;
     }
 
+    @Override
+    public void bounceOff(Entity source, float velocity, float delta) {
+        if (velocity <= 0) return;
+
+        var angle = source.getAngleTo(this);
+        var impulse = velocity * 0.2f;
+        this.setRotation(angle);
+        this.bounceVelocity.set(MathUtils.cosDeg(angle) * impulse, MathUtils.sinDeg(angle) * impulse);
+    }
+
     public float getBaseBounceAmount() {
         return this.baseBounceAmount;
     }
@@ -436,6 +469,9 @@ public class Bubble extends AbstractBubbleEntity {
     @Override
     public void damage(double value, EntityDamageSource source) {
         if (this.isBeingDestroyed) return;
+        var attacker = source.getEntity();
+        if (!attacker.doesAttack(this) || !this.canBeAttackedBy(attacker)) return;
+
         super.damage(value / this.attributes.getBase(Attribute.DEFENSE), source);
         if (this.invincible) return;
         this.pop();
@@ -447,8 +483,6 @@ public class Bubble extends AbstractBubbleEntity {
 
         this.delete();
         this.isBeingDestroyed = true;
-        this.attributes.removeModifiers(Attribute.SCORE);
-        this.attributes.setBase(Attribute.SCORE, 0);
         this.canCollideWith.clear();
         this.canAttack.clear();
     }

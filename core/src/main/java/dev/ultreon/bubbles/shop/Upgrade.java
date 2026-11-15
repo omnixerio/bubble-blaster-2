@@ -1,21 +1,24 @@
 package dev.ultreon.bubbles.shop;
 
+import dev.ultreon.bubbles.text.MutableText;
 import dev.ultreon.bubbles.text.TextObject;
+import dev.ultreon.bubbles.util.RomanNumbers;
 import dev.ultreon.libs.commons.v0.Identifier;
 import dev.ultreon.ubo.types.DataType;
 import dev.ultreon.ubo.types.MapType;
 
 public class Upgrade implements ShopItem {
     public static final Upgrade HEALTH = new Upgrade("health", 100);
+    public static final Upgrade DEFENSE = new Upgrade("defense", 100);
     public static final Upgrade SPEED = new Upgrade("speed", 100, 5);
     public static final Upgrade AMMO_RELOAD_SPEED = new Upgrade("ammo_reload_speed", 100, 5);
     public static final Upgrade AMMO_PIERCING = new Upgrade("ammo_piercing", 100, 10);
 
-    private final TextObject name;
+    private final MutableText name;
     private final int basePrice;
     private final int maxLevel;
+    private final String id;
     private int level = 0;
-    private String id;
 
     public Upgrade(String name, int basePrice) {
         this(name, basePrice, -1);
@@ -71,7 +74,7 @@ public class Upgrade implements ShopItem {
 
     @Override
     public TextObject getName() {
-        return this.name;
+        return TextObject.nullToEmpty(this.name.getText() + " " + RomanNumbers.toRoman(this.level + 1));
     }
 
     @Override

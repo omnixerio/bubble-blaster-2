@@ -206,6 +206,7 @@ public class ShopScreen extends Screen {
         }
 
         item.onBought();
+        Shop.save();
         this.refreshActiveContent();
     }
 

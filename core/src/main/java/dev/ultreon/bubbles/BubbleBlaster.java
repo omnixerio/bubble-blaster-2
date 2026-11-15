@@ -494,7 +494,7 @@ public final class BubbleBlaster extends ApplicationAdapter implements CrashFill
     }
 
     public void pauseGame() {
-        if (this.isInGame() && !(this.getCurrentScreen() instanceof PauseScreen)) {
+        if (this.isInGame() && this.getCurrentScreen() == null) {
             this.showScreen(new PauseScreen());
             this.gameplayMusic.pause();
         }
@@ -1887,8 +1887,12 @@ public final class BubbleBlaster extends ApplicationAdapter implements CrashFill
     private boolean keyPressEnv(World world, int keycode) {
         var isDev = this.canExecuteDevCommands();
 
-        if (isDev && keycode == Keys.F10 && world.beginEvent(GameplayEvents.BLOOD_MOON_EVENT))
+        if (isDev && keycode == Keys.F10) {
+            BubbleBlaster.invokeTick(() -> {
+                world.beginEvent(GameplayEvents.BLOOD_MOON_EVENT);
+            });
             return true;
+        }
 
         return keycode == Keys.SLASH && !this.hasScreenOpen() && BubbleBlaster.getInstance().showScreen(new CommandScreen());
     }
